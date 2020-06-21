@@ -1,0 +1,7 @@
+.idea
+*.iml
+data/sets/
+data/IP2LOCATION-LITE-ASN.CSV
+dist/
+mysq/
+node_modules/
