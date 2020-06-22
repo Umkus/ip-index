@@ -1,20 +1,13 @@
 # Getting all obviously named ASNs
 SELECT DISTINCT name
-FROM asn
-WHERE name REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('bad', 'company'))
-  AND name NOT REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('good'));
+FROM asns
+WHERE LOWER(name) REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('bad', 'company'))
+  AND LOWER(name) NOT REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('good'))
+limit 10;
 
 
-LOAD DATA INFILE '../blocklist-ipsets/' INTO TABLE ipCompare_tbl
-    FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-    LINES TERMINATED BY ';'
-    IGNORE 1 LINES
-    (@ipstart, @ipend, id)
-    SET ipStart = INET_ATON(@ipstart), ipEnd = INET_ATON(@ipend);
-
-select INET_ATON('1.0.130.29');
-
+# Checkin an IP
 select *
 from ranges
-where INET_ATON('1.0.130.29') BETWEEN ip_from AND ip_to;
+where INET_ATON('212.92.115.7') BETWEEN ip_from AND ip_to;
 
