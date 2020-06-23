@@ -1,29 +1,24 @@
 # Getting all obviously named ASNs
-SELECT count(distinct name)
+SELECT distinct name
 FROM asns
 WHERE LOWER(name) REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('bad', 'company'))
   AND LOWER(name) NOT REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('good'));
 
-# Checkin an IP
-select *
-from ranges
-where cidr = '212.92.115.7';
-
-select *
-from asns
-where cidr = '212.92.112.0/21';
-
 select (INET_ATON(SUBSTRING_INDEX(@cidr, '/', 1)) & 0x00FF0000) >> 16;
 
-# Get a list of all ASNs with bad IPs
-explain extended
-select count(DISTINCT asns.name)
+# Get a list of all ASNs with bad IPs, but too much telecoms mixed in
+#explain extended
+
+select distinct asns.name
 from ranges r
          INNER JOIN asns ON
         asns.first_octet = r.first_octet AND
         asns.second_octet = r.second_octet AND
         r.ip_from BETWEEN asns.ip_from AND asns.ip_to
 WHERE LOWER(asns.name) NOT REGEXP (SELECT GROUP_CONCAT(pattern SEPARATOR '|') FROM patterns WHERE type IN ('good'))
+  #AND LOWER(asns.name) like '%microsoft%'
+#group by asns.name
+#order by count(asns.name) DESC
 ;
 
 set @cidr := '212.92.112.5';

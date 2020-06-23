@@ -1,12 +1,12 @@
 host
-coloc
-vpn\\W
+coll?oc
+vpn\W
+vps\W
 data.?center
 cdn
 transit
-\\.com
-\\.net
-\\.ru
+\.[a-z]{2,3}\W
+www\.\w
 server
 solution
 compu
@@ -15,4 +15,9 @@ dedi
 infra
 university
 school
+college
+hospital
 wifi
+\Wdc\W
+ddos
+rent
