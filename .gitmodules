@@ -1,0 +1,3 @@
+[submodule "blocklist-ipsets"]
+	path = blocklist-ipsets
+	url = https://github.com/firehol/blocklist-ipsets
