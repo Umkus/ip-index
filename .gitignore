@@ -3,7 +3,7 @@
 data/sets/
 data/IP2LOCATION-LITE-ASN.CSV
 dist/*
-!dist/ip-block.netset
-!dist/asn-block.netset
+!dist/bad-ips.netset
+!dist/datacenters.netset
 mysq/
 node_modules/
