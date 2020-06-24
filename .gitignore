@@ -2,7 +2,7 @@
 *.iml
 data/sets/
 data/IP2LOCATION-LITE-ASN.CSV
-dist/
+dist/*
 !dist/ip-block.netset
 !dist/asn-block.netset
 mysq/
