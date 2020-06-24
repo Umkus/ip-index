@@ -16,12 +16,15 @@ unzip -q -o dist/firehol.zip -d dist
 
 rm -f dist/blocklist-ipsets-master/iblocklist_isp*
 rm -rf dist/blocklist-ipsets-master/*country
+mv dist/blocklist-ipsets-master/datacenters.netset dist/datacenters.netset
 
 echo Building datacenter blocklist...
-grep -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -v -f patterns/good.csv | cut -d'"' -f6 | sort -u >dist/datacenters.netset
+grep -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -v -f patterns/good.csv | cut -d'"' -f6 >>dist/datacenters.netset
+sort -u -o dist/datacenters.netset dist/datacenters.netset
+sed -i '/^[^0-9]/d' dist/datacenters.netset
+
 echo Building IP blocklist...
 sort -u dist/blocklist-ipsets-master/*set >dist/bad-ips.netset
-
 sed -i '/^[^0-9]/d' dist/bad-ips.netset
 
 echo Done!

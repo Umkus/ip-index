@@ -1,7 +1,7 @@
 # Bad IPs blocklist
 
 IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers.
-The files are located in `dist/` directory, but are likely outdated.
+The files are located in `dist/` directory.
 
 ## Building
 To generate your own fresh blocklist run:
