@@ -11,10 +11,9 @@ build:
   stage: build
   script:
     - git clone https://Umkus:${BLOCKLIST_UPDATE_TOKEN}@github.com/Umkus/bad-ip-blocklist.git
-    - ls -lsah ./ bad-ip-blocklist/
     - cd bad-ip-blocklist
     - ./bin/build.sh
     - git status
     - git add dist/*.netset
-    - git commit -m Updated blocklists
+    - git commit -m "Updated blocklists"
     - git push origin master
