@@ -4,6 +4,8 @@ set -e
 
 cd $(dirname $0)/..
 
+mkdir -p dist/
+
 echo Downloading ASN DB...
 curl --silent --location --request GET https://www.ip2location.com/download/?token=${TOKEN}\&file=DBASNLITE >dist/asns.zip
 
