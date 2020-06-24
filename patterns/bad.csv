@@ -1,10 +1,9 @@
 host
 coll?oc
-vpn\W
-vps\W
+\Wvpn\W
+\Wvps\W
+\Wcdn\W
 data.?center
-cdn
-transit
 server
 solution
 compu
