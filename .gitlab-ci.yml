@@ -1,0 +1,17 @@
+image: docker:latest
+
+stages:
+  - build
+
+before_script:
+  - git config --global user.email "updater@umkus.com"
+
+build:
+  stage: build
+  script:
+    - git clone https://Umkus:${BLOCKLIST_UPDATE_TOKEN}@github.com/Umkus/bad-ip-blocklist.git
+    - cd bad-ip-blocklist
+    - TOKEN=${IP2LOCATION_DOWNLOAD_TOKEN} ./bin/build.sh
+    - git add dist/
+    - git commit -m Updated blocklists
+    - git push origin master
