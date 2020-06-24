@@ -2,10 +2,10 @@
 cd $(dirname $0)/..
 
 echo Downloading ASN DB...
-#curl --silent --location --request GET https://www.ip2location.com/download/?token=${TOKEN}\&file=DBASNLITE >dist/asns.zip
+curl --silent --location --request GET https://www.ip2location.com/download/?token=${TOKEN}\&file=DBASNLITE >dist/asns.zip
 
 echo Downloading firehol blocklists...
-#curl --silent --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
+curl --silent --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
 
 echo Preparing...
 unzip -q -o dist/asns.zip -d dist
