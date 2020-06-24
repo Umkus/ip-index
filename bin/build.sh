@@ -12,7 +12,7 @@ curl --location --request GET https://www.ip2location.com/download/?token=${TOKE
 echo Downloading firehol blocklists...
 curl --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
 
-ls -lsah dist/
+ls -lsah ./ dist/
 
 echo Preparing...
 unzip -o dist/asns.zip -d dist
