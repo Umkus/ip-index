@@ -7,14 +7,14 @@ cd $(dirname $0)/..
 mkdir -p dist/
 
 echo Downloading ASN DB...
-curl --silent --location --request GET https://www.ip2location.com/download/?token=${TOKEN}\&file=DBASNLITE >dist/asns.zip
+curl --location --request GET https://www.ip2location.com/download/?token=${TOKEN}\&file=DBASNLITE >dist/asns.zip
 
 echo Downloading firehol blocklists...
-curl --silent --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
+curl --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
 
 echo Preparing...
-unzip -q -o dist/asns.zip -d dist
-unzip -q -o dist/firehol.zip -d dist
+unzip -o dist/asns.zip -d dist
+unzip -o dist/firehol.zip -d dist
 
 rm -f dist/blocklist-ipsets-master/iblocklist_isp*
 rm -rf dist/blocklist-ipsets-master/*country

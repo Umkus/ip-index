@@ -4,7 +4,7 @@ stages:
   - build
 
 before_script:
-  - apk update && apk add git curl
+  - apk update && apk add git curl unzip
   - git config --global user.email "updater@umkus.com"
 
 build:
