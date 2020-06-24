@@ -9,6 +9,7 @@ before_script:
 
 build:
   stage: build
+  allow_failure: true
   script:
     - git clone https://Umkus:${BLOCKLIST_UPDATE_TOKEN}@github.com/Umkus/bad-ip-blocklist.git
     - cd bad-ip-blocklist
