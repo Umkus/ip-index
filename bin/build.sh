@@ -4,6 +4,7 @@ set -e
 
 cd $(dirname $0)/..
 
+rm -rf dist/
 mkdir -p dist/
 
 echo Downloading ASN DB...
