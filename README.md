@@ -16,3 +16,4 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 * [Firehol](https://github.com/firehol/blocklist-ipsets)
 * [ip2location ASN DB](https://lite.ip2location.com/database/ip-asn)
 * [This list of DC names](https://udger.com/resources/datacenter-list)
+* [This list of ASNs](https://github.com/brianhama/bad-asn-list/blob/master/bad-asn-list.csv)
