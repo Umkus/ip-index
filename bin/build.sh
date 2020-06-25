@@ -17,6 +17,7 @@ unzip -o dist/asns.zip -d dist
 unzip -o dist/firehol.zip -d dist
 
 rm -f dist/blocklist-ipsets-master/iblocklist_isp*
+rm -f dist/blocklist-ipsets-master/firehol_level4.netset
 rm -rf dist/blocklist-ipsets-master/*country
 mv dist/blocklist-ipsets-master/datacenters.netset dist/datacenters.netset
 
