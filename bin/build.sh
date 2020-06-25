@@ -4,7 +4,6 @@ set -e
 
 cd $(dirname $0)/..
 
-rm -rf dist/
 mkdir -p dist/
 
 echo Downloading ASN DB...
@@ -22,7 +21,7 @@ rm -rf dist/blocklist-ipsets-master/*country
 mv dist/blocklist-ipsets-master/datacenters.netset dist/datacenters.netset
 
 echo Building datacenter blocklist...
-grep -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -v -f patterns/good.csv | cut -d'"' -f6 >>dist/datacenters.netset
+grep -i -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -i -v -f patterns/good.csv | cut -d'"' -f6 >>dist/datacenters.netset
 sort -u -o dist/datacenters.netset dist/datacenters.netset
 sed -i '/^[^0-9]/d' dist/datacenters.netset
 
