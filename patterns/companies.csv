@@ -1,9 +1,17 @@
-"_+"
+"[_-]+"
+"atol"
+"gtt"
+"infolink"
 "packet"
 "ps"
+"reconn"
 "reserved as"
+"ugb"
+-opera\W
 1blu
+2 kukush str.
 21vianet
+22 stirling st
 24shells
 8 to infinity
 Incapsula
@@ -34,7 +42,11 @@ Incapsula
 \Wwii\W
 \Wxtom
 \Wznet\W
+a2-cus
+abakandc-as
 abansys
+abcde group company limited
+accelerated-it
 acceptance
 activecloud
 advania
@@ -49,6 +61,7 @@ amazon
 amc
 anexia internetdienstleistungs
 angani
+antbox network
 anycloud
 aptum
 aquaray
@@ -88,6 +101,7 @@ baidu
 bandwidth-as
 baseip
 bcl
+bigbrain
 binero
 bip backbone
 bit bv
@@ -135,6 +149,7 @@ cybersmartsolutions
 czechitc
 daou
 data.?space
+datacell limited
 datacheap-llc-as
 dataclub
 datahata
@@ -144,6 +159,7 @@ datasoft
 datasource
 dataspace
 dataspring
+david_craig
 dc74-as
 delta-bg
 deninet
@@ -188,6 +204,7 @@ fishnet-as
 flesk
 flokinet
 flynet
+forknetworking
 fortress
 foxcloud
 frankfurt germany
@@ -257,10 +274,12 @@ infobox
 infolink-mia
 inic as
 inline-as
+int-network
 integrity informatics ltd.
 intergrid group pty ltd
 internap
 internet archive
+internet thailand company limited
 internet-solutions
 internetbolaget
 interswitch
@@ -285,6 +304,7 @@ krakowskie
 krypt
 ktis 2
 kylos
+l7-connect
 lancom
 landmark-university
 latisys
@@ -298,6 +318,7 @@ lightstorm
 limestonenetworks
 link11
 linode
+liulinnet
 locaweb
 logicweb
 london great britain
@@ -315,9 +336,13 @@ melbikomas uab
 micfo
 microsoft
 milano
+mirdara
 mittwald
 mivitec
+mod-eu
 modernone
+modmc
+moveclickllc
 mserwis
 muennich
 multacom
@@ -330,10 +355,13 @@ nbiserv
 nebula oy
 nedzone
 nepustilnet
+netactuate
 netcom-africa-as
+netelligent
 neterra-as
 netherlands
 netprotect
+netrange
 netstack-as
 netzbetrieb
 netzdienste
@@ -354,13 +382,16 @@ ns1\W
 ntt.?pc
 nucleus
 o2switch
+obenetwork europe
 obone
 ocean network limited
 oni lisbon
 online sas
 ons-cos
+onvoy
 optage
 oracle
+over the wire
 ovh
 oxilion
 packetexchange
@@ -373,6 +404,7 @@ parad-40-asn
 pce-net
 pcextreme
 pdda-as
+pegtechinc
 phase3tel
 phoenixnap
 pin-as
@@ -386,25 +418,31 @@ port80
 portlane www
 powerhouse management inc.
 prof-tel-comm ltd.
+proofpoint
 proserv-as
 qsc\W
 quadranet
 quantilnetworks
 quickpacket
 quickweb
+qwarta
 qweb
 racknation
 rackspace
+racktech
 ramnode
 rblhst
 real.?comm
+region40
 rentarack
 rh-tec
 riffle
 rijnstaete
+rmi-fitech
 rootnetworks
 routernetworks
 royaleasn
+s
 sakura internet
 savvis
 sby-telecom-as
@@ -452,6 +490,7 @@ thefirst-as
 theopt-hou
 thinksystemsuk
 thordc-as
+tier-net
 tilaa
 trabia
 triplec
@@ -479,7 +518,7 @@ velia\.net
 versaweb-asn
 vgc communication ltd.
 viet online
-virtono-networks
+virtono-network
 virty
 vitox
 vnet-as
@@ -500,6 +539,7 @@ webgo
 webnx
 websupport-sro
 webzilla
+wellweb
 wia-as
 wikimedia
 winrock
@@ -509,10 +549,13 @@ wow
 wzcom
 xirra
 xl-as
+xneelo
 xt.?global
+xtglobal
 yahoo
 yandex
 yisp
+yune informatica ltda
 yurteh
 zenex5ive
 zeta-web-nigeria-as
