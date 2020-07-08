@@ -1,7 +1,16 @@
 "[_-]+"
+"altus"
+"amc"
 "atol"
+"bcl"
+"blix"
+"dhub"
+"dmit"
 "gtt"
 "infolink"
+"kinx"
+"nazwa"
+"nthl"
 "packet"
 "ps"
 "reconn"
@@ -49,21 +58,27 @@ abcde group company limited
 accelerated-it
 acceptance
 activecloud
+addd2net-inc
 advania
+affinity-ftl
 agava3
+agni systems limited
+ais-west
 akamai
+alchemynet
 alentus
 alexhost
 alibaba
 almouroltec
 amanaha-new
+amaze.com.au
 amazon
-"amc"
 anexia internetdienstleistungs
 angani
 antbox network
 anycloud
 anynode
+aofei data
 aptum
 aquaray
 areti-as
@@ -74,17 +89,24 @@ arvid-logicum
 as-46805
 as-60485
 as-63119
+as-coloam
 as-digitalfyre
 as-inline
 as-prioritycolo
+as-reg
 as-softplus
+as-sprio
 as-stackpath
 as-tierp-36024
+as-xfernet
 as40676
 as41564
 as45671-net-au
 as57858
 as6453
+asfibersunucu fibersunucu
+asmallorange
+asn-dcs-01
 asn-gigenet
 asn-jee-pl
 asn-routelabel
@@ -99,10 +121,11 @@ atom86
 avast
 aweb-asn
 axcelx-net
+bahnhof ab
 baidu
 bandwidth-as
 baseip
-"bcl"
+belcloud
 bigbrain
 binero
 bip backbone
@@ -126,6 +149,7 @@ citynet
 clara.?online
 claranet
 clausweb
+cloud south
 cloud.?flare
 cloud9
 cloudie limited
@@ -139,6 +163,11 @@ cogeco-
 cogent
 cologix
 colomx
+colosseum-onl
+combahton
+combell-as
+communilink internet
+completewebnet
 compuweb communications
 connectingbytes
 contabo
@@ -148,13 +177,17 @@ ctrls
 cyber space
 cybersmartsolutions
 czechitc
+dacen-
 daou
 data.?space
+datacate-
 datacell limited
 datacheap-llc-as
+datacity
 dataclub
 datahata
 datahouse
+datanoc
 datasix
 datasoft
 datasource
@@ -162,19 +195,21 @@ dataspace
 dataspring
 david_craig
 dc74-as
+defense-net
 delta-bg
 deninet
-"dhub"
 digicube
 digital energy technologies chile
+digital pacific pty
 digital.?ocean
 dimenoc
 dini nusa
-"dmit"
 dogado
 dominet
+doruknet
 dotsi
 drake-as
+dreamscape networks
 dsnetworks-001
 dsrack
 dunkel
@@ -207,6 +242,7 @@ flokinet
 flynet
 forknetworking
 fortress
+fourd-as
 foxcloud
 frankfurt germany
 franzstr
@@ -215,6 +251,7 @@ galaxybb-as
 garm-as
 gd-emea-dc
 gd.?emea
+gigsgigs network
 ginernet
 gitoyen
 glesys
@@ -231,11 +268,14 @@ gogrid
 google
 gorack
 greatnet
+green.ch
 gsl networks
 gtt-as
 h1asn
 h4y
+hanson information systems
 hatteland
+hd.net.nz
 heart-asn
 heficed
 hekko
@@ -248,6 +288,7 @@ highwinds
 highwinds2
 hitme
 homepl
+hopone-global
 host4geeks
 hoyos-consulting-llc
 hpls
@@ -258,12 +299,14 @@ hvc-as
 hyperia
 hz-ca-as
 i3dnet
+ic2net
 icn-as
 icsl
 idc frontier inc
 idh equinix connect
 ifx18747
 ignum
+ikoula
 iland internet solutions corporation
 imperva
 inasset
@@ -292,6 +335,7 @@ ip-projects
 ipv4-as
 iqpl
 is-as-1
+iseek communications
 isi-asn
 isppro
 ist-as
@@ -299,9 +343,11 @@ it7
 itldc-nl
 iwsnet
 j. reckner
+jovita
 keyweb
 kkon
 kometa-as
+kpn-internedservices
 krakowskie
 krypt
 ktis 2
@@ -334,6 +380,8 @@ mailkit
 makonix
 manitu
 master.cz
+maxindo
+media antar nusa pt
 meerfarbig
 melbikomas uab
 micfo
@@ -348,33 +396,42 @@ modmc
 moveclickllc
 mserwis
 muennich
+multa-
 multacom
+mvps.net
 myloc
 namecheap
 nano-as
 nask-commercial
+natcoweb
 nav.?communications
 nbiserv
 nebula oy
 nedzone
 nepustilnet
+net4india
 netactuate
 netcom-africa-as
+netcup gmbh
 netelligent
 neterra-as
 netherlands
 netprotect
 netrange
 netstack-as
+network presence
 netzbetrieb
 netzdienste
 neustar
 newmedia express pte ltd
+nexcess-net
 nexeon
+nexlinx
 nforce
 ng-nigeria-as
 ngcom
 nigcomsat
+nipa technology
 nobis technology group llc
 nocix
 nodesdirect
@@ -399,6 +456,7 @@ ovh
 oxilion
 packetexchange
 pacswitch ip network
+padi internet
 pair.?networks
 pallada web service llc
 panq
@@ -408,6 +466,7 @@ pce-net
 pcextreme
 pdda-as
 pegtechinc
+perfect-international
 phase3tel
 phoenixnap
 pin-as
@@ -423,6 +482,7 @@ powerhouse management inc.
 prof-tel-comm ltd.
 proofpoint
 proserv-as
+public-domain-registry
 qsc\W
 quadranet
 quantilnetworks
@@ -442,9 +502,11 @@ rh-tec
 riffle
 rijnstaete
 rmi-fitech
+romarg
 rootnetworks
 routernetworks
 royaleasn
+ru-center
 sakura internet
 savvis
 sby-telecom-as
@@ -470,10 +532,12 @@ softbank
 softech-
 softlayer
 solarcom
+spacenet internet
 speedbone
 squarespace
 st-bgp
 strato
+sunnyvision limited
 superdata
 supernetwork
 supremebytes-as
@@ -506,6 +570,9 @@ tuxis
 tzulo
 udomain
 uk2net-as
+ukfast
+ukweb-eqx
+ultranet telecomunicacoes
 unelink
 unified layer
 unifiedlayer
@@ -525,6 +592,8 @@ velia\.net
 versaweb-asn
 vgc communication ltd.
 viet online
+vietel - cht
+virtbiz-dallas
 virtono-network
 virty
 vitox
@@ -535,6 +604,7 @@ vplsnet
 vpntranet-llc
 vultr
 w i x net do brasil
+wansecurity
 web world ireland
 web.?werks
 web2objects
@@ -567,6 +637,8 @@ yune informatica ltda
 yurteh
 zenex5ive
 zeta-web-nigeria-as
+zettagrid cloud
 zinox
+zirkusweg 1
 zone.?media
 zscaler
