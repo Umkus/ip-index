@@ -2,7 +2,9 @@
 anonim
 anony
 cdn\W
-coll?oc
+coll?o(c|[^a-z])
+scale
+cloud
 data.?center
 ddos
 dedi
