@@ -17,8 +17,8 @@ function calculateCidrRange(cidr) {
   return [(range >> 24) & 0xFF, range & mask, range | ~mask];
 }
 
-const badIps = fs.readFileSync('../dist/bad-ips.netset', {encoding: 'ascii'}).split(/\r?\n/);
-const dcIps = fs.readFileSync('../dist/datacenters.netset', {encoding: 'ascii'}).split(/\r?\n/);
+const badIps = fs.readFileSync(`${__dirname}/../dist/bad-ips.netset`, {encoding: 'ascii'}).split(/\r?\n/);
+const dcIps = fs.readFileSync(`${__dirname}/../dist/datacenters.netset`, {encoding: 'ascii'}).split(/\r?\n/);
 const allIps = badIps.concat(dcIps);
 const ipdb = [];
 
