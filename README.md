@@ -11,6 +11,16 @@ $ TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} ./bin/build.sh
 
 You can get your free token on [https://lite.ip2location.com/](https://lite.ip2location.com/).  
 
+## Usage in node
+
+```javascript
+const lookup = require('bad-ip-blocklist');
+
+const found =  lookup('1.1.1.1'); // [ 16843009, 16843009 ]
+```
+
+If ip is found in the database, an integer ip range is returned, otherwise `undefined`.
+
 ## Used projects
 
 * [Firehol](https://github.com/firehol/blocklist-ipsets)

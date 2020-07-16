@@ -5,7 +5,6 @@
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
   "main": "src/index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "author": "Michael Gorianskyi"
 }
