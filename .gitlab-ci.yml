@@ -6,6 +6,7 @@ stages:
 before_script:
   - apk update && apk add git curl unzip grep sed coreutils npm
   - git config --global user.email "updater@umkus.com"
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
 build:
   stage: build
