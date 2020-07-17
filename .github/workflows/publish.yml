@@ -19,4 +19,6 @@ jobs:
           CI: true
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
       - name: Publish
-        run: npm publish
+        run: |
+          npm version patch
+          npm publish
