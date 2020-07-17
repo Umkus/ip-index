@@ -17,5 +17,5 @@ build:
     - git status
     - git add dist/*.netset
     - git commit -m "Updated blocklists"
-    - git push origin master || true
-    - npm publish || true
+    - npm version patch
+    - npm publish
