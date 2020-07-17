@@ -16,6 +16,6 @@ build:
     - ./bin/build.sh
     - git status
     - git add dist/*.netset
-    - git commit -m "Updated blocklists"
+    - git commit -m "Updated blocklists" || true
     - npm version patch
     - npm publish
