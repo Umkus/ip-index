@@ -18,5 +18,6 @@ build:
     - git status
     - git add dist/*.netset
     - git commit -m "Updated blocklists" || true
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm version patch
     - npm publish
