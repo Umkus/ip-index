@@ -21,3 +21,4 @@ build:
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm version patch
     - npm publish
+    - git push || true
