@@ -1,24 +1,20 @@
-name: Publish package
+name: Publish NPM package
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'dist/*'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - name: Register Token
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+      - run: npm version patch
+      - run: npm publish
         env:
-          CI: true
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-      - name: Publish
-        run: |
-          npm version patch
-          npm publish
