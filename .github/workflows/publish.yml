@@ -2,19 +2,26 @@ name: Publish NPM package
 
 on:
   push:
-    paths:
-      - 'dist/*'
+    branches:
+      - master
 
 jobs:
-  publish:
+  npm-publish:
+    name: npm-publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Set up Node
+        uses: actions/setup-node@master
         with:
           node-version: 12
-          registry-url: https://registry.npmjs.org/
-      - run: npm version patch
-      - run: npm publish
+      - name: Publish if version has been updated
+        uses: pascalgn/npm-publish-action@4f4bf159e299f65d21cd1cbd96fc5d53228036df
+        with:
+          tag_name: "%s"
+          tag_message: "%s"
+          commit_pattern: "^Publishing (\\S+)"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
