@@ -11,7 +11,6 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - name: Build
       - run: ./bin/build.sh
         env:
           TOKEN: ${{ secrets.TOKEN }}
