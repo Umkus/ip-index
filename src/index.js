@@ -1,4 +1,5 @@
 const fs = require('fs');
+const {resolve} = require('path');
 
 function ip2int(ip) {
   return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
@@ -13,8 +14,8 @@ function calculateCidrRange(cidr) {
   return [min, max];
 }
 
-const badIps = fs.readFileSync(`${__dirname}/../dist/bad-ips.netset`, {encoding: 'ascii'}).split(/\r?\n/);
-const dcIps = fs.readFileSync(`${__dirname}/../dist/datacenters.netset`, {encoding: 'ascii'}).split(/\r?\n/);
+const badIps = fs.readFileSync(`${resolve()}/../dist/bad-ips.netset`, {encoding: 'ascii'}).split(/\r?\n/);
+const dcIps = fs.readFileSync(`${resolve()}/../dist/datacenters.netset`, {encoding: 'ascii'}).split(/\r?\n/);
 const allIps = badIps.concat(dcIps);
 const ipdb = [];
 
