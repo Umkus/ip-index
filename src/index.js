@@ -1,42 +1,51 @@
-const fs = require('fs');
+const {readFile} = require('fs');
+const {promisify} = require('util');
 
-function ip2int(ip) {
-  return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
+const readFileAsync = promisify(readFile);
+const fsParams = {encoding: 'ascii'};
+
+class BlockList {
+  constructor(dataPath = '../dist') {
+    this.dataPath = dataPath;
+    this.db = [];
+  }
+
+  ip2int(ip) {
+    return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
+  }
+
+  calculateRange(cidr) {
+    const [ip, bits = 32] = cidr.split('/');
+    const min = this.ip2int(ip);
+    const max = min + 2 ** (32 - bits) - 1;
+
+    return [min, max];
+  }
+
+  build() {
+    return Promise.all([
+      readFileAsync(`${this.dataPath}/bad-ips.netset`, fsParams),
+      readFileAsync(`${this.dataPath}/datacenters.netset`, fsParams)
+    ])
+      .then(([badIps, dcIps]) => {
+        const allIps = [].concat(badIps.split(/\r?\n/), dcIps.split(/\r?\n/));
+
+        allIps.forEach((cidr) => {
+          const [first, last] = this.calculateRange(cidr);
+          const start = (first >> 24) & 0xFF;
+
+          this.db[start] = this.db[start] || [];
+          this.db[start].push([first, last]);
+        });
+      });
+  }
+
+  contains(ip) {
+    const start = +ip.split('.')[0];
+    const ipInt = this.ip2int(ip);
+
+    return !!(this.db[start] || []).find((range) => ipInt >= range[0] && ipInt <= range[1]);
+  }
 }
 
-function calculateCidrRange(cidr) {
-  const [ip, bits = 32] = cidr.split('/');
-
-  const min = ip2int(ip);
-  const max = min + 2 ** (32 - bits) - 1;
-
-  return [min, max];
-}
-
-function buildDb(path = '../dist') {
-  const badIps = fs.readFileSync(`${path}/bad-ips.netset`, {encoding: 'ascii'}).split(/\r?\n/);
-  const dcIps = fs.readFileSync(`${path}/datacenters.netset`, {encoding: 'ascii'}).split(/\r?\n/);
-  const allIps = badIps.concat(dcIps);
-  const db = [];
-
-  allIps.forEach((cidr) => {
-    const [first, last] = calculateCidrRange(cidr);
-    const start = (first >> 24) & 0xFF;
-
-    db[start] = db[start] || [];
-    db[start].push([first, last]);
-  });
-
-  return {
-    contains: (ip) => lookup(ip, db),
-  };
-}
-
-function lookup(ip, db) {
-  const start = +ip.split('.')[0];
-  const ipInt = ip2int(ip);
-
-  return !!(db[start] || []).find((range) => ipInt >= range[0] && ipInt <= range[1]);
-}
-
-module.exports = {buildDb};
+module.exports = BlockList;
