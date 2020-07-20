@@ -14,12 +14,14 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 ## Usage in node
 
 ```javascript
-const lookup = require('bad-ip-blocklist');
+const { buildDb } = require('bad-ip-blocklist');
 
-const found =  lookup('1.1.1.1'); // [ 16843009, 16843009 ]
+const db = buildDb(); // This blocks for some seconds
+
+db.contains('1.1.1.1'); // true
 ```
 
-If ip is found in the database, an integer ip range is returned, otherwise `undefined`.
+If the IP is found in the database it would return `true` and `false` otherwise.
 
 ## Used projects
 
