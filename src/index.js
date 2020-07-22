@@ -1,13 +1,19 @@
 const {readFile} = require('fs');
 const {promisify} = require('util');
+const sqlite3 = require('better-sqlite3');
 
 const readFileAsync = promisify(readFile);
 const fsParams = {encoding: 'ascii'};
 
 class BlockList {
-  constructor(dataPath = '../dist') {
-    this.dataPath = dataPath;
-    this.db = [];
+  constructor(dbFile = '../dist/blocklist.db') {
+    const db = sqlite3(dbFile);
+
+    db.pragma('journal_mode = memory;');
+    db.pragma('synchronous = off;');
+    db.pragma('automatic_index = off;');
+
+    this.select = db.prepare('SELECT 1 FROM ips WHERE start = ? AND ? between first AND last LIMIT 1');
   }
 
   ip2int(ip) {
@@ -44,7 +50,7 @@ class BlockList {
     const start = +ip.split('.')[0];
     const ipInt = this.ip2int(ip);
 
-    return !!(this.db[start] || []).find((range) => ipInt >= range[0] && ipInt <= range[1]);
+    return !!this.select.pluck().get(start, ipInt);
   }
 }
 
