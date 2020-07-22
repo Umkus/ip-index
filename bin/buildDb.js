@@ -2,7 +2,7 @@ const {readFile, unlinkSync} = require('fs');
 const {promisify} = require('util');
 const sqlite3 = require('better-sqlite3');
 
-const distPath = process.argv[2] || '../dist/';
+const distPath = `${__dirname}/../dist/`;
 
 try {
   unlinkSync(distPath);

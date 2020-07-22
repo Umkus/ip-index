@@ -9,7 +9,7 @@
     "buildDb": "node ./bin/buildDb.js ./dist/"
   },
   "dependencies": {
-    "better-sqlite3": "6.0.1"
+    "better-sqlite3": "^7.1.0"
   },
   "author": "Michael Gorianskyi"
 }
