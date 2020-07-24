@@ -5,7 +5,7 @@ const sqlite3 = require('better-sqlite3');
 const readFileAsync = promisify(readFile);
 const fsParams = {encoding: 'ascii'};
 
-class BlockList {
+class IpInfo {
   constructor(dbFile = '../dist/blocklist.db') {
     const db = sqlite3(dbFile);
 
@@ -13,7 +13,8 @@ class BlockList {
     db.pragma('synchronous = off;');
     db.pragma('automatic_index = off;');
 
-    this.selectIps = db.prepare('SELECT 1 FROM ips WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectBlacklists = db.prepare('SELECT 1 FROM blacklisted WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectDatacenters = db.prepare('SELECT 1 FROM datacenters WHERE start = ? AND ? between first AND last LIMIT 1');
     this.selectCountries = db.prepare('SELECT country FROM countries WHERE start = ? AND ? between first AND last LIMIT 1');
   }
 
@@ -47,11 +48,18 @@ class BlockList {
       });
   }
 
-  contains(ip) {
+  isBlacklisted(ip) {
     const start = +ip.split('.')[0];
     const ipInt = this.ip2int(ip);
 
-    return !!this.selectIps.pluck().get(start, ipInt);
+    return !!this.selectBlacklists.pluck().get(start, ipInt);
+  }
+
+  isDatacenter(ip) {
+    const start = +ip.split('.')[0];
+    const ipInt = this.ip2int(ip);
+
+    return !!this.selectDatacenters.pluck().get(start, ipInt);
   }
 
   getCountry(ip) {
@@ -62,4 +70,4 @@ class BlockList {
   }
 }
 
-module.exports = BlockList;
+module.exports = IpInfo;

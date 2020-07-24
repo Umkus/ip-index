@@ -21,7 +21,7 @@ function calculateRange(cidr) {
   return [min, max];
 }
 
-const db = sqlite3(`${distPath}/blocklist.db`);
+const db = sqlite3(`${distPath}/ipinfo.db`);
 
 const readFileAsync = promisify(readFile);
 const fsParams = {encoding: 'ascii'};
@@ -31,24 +31,26 @@ db.pragma('synchronous = off;');
 db.pragma('auto_vacuum = FULL;');
 db.pragma('automatic_index = off;');
 
-db.exec('DROP TABLE IF EXISTS ips;');
+db.exec('DROP TABLE IF EXISTS blacklisted;');
 db.exec('DROP TABLE IF EXISTS countries;');
-db.exec('CREATE TABLE ips (start TINYINT, first INT, last INT);');
+db.exec('DROP TABLE IF EXISTS datacenters;');
+db.exec('CREATE TABLE blacklisted (start TINYINT, first INT, last INT);');
+db.exec('CREATE TABLE datacenters (start TINYINT, first INT, last INT);');
 db.exec('CREATE TABLE countries (start TINYINT, first INT, last INT, country CHAR(2));');
-db.exec('CREATE INDEX ip_uniq ON ips (start, first, last)');
-db.exec('CREATE INDEX country_uniq ON countries (start, first, last)');
-db.exec('BEGIN TRANSACTION;');
-const insertIp = db.prepare('INSERT OR IGNORE INTO ips VALUES (?,?,?)');
+db.exec('CREATE INDEX blacklisted_uniq ON blacklisted (start, first, last)');
+db.exec('CREATE INDEX countries_uniq ON countries (start, first, last)');
+db.exec('CREATE INDEX datacenters_uniq ON datacenters (start, first, last)');
+const insertBlacklisted = db.prepare('INSERT OR IGNORE INTO blacklisted VALUES (?,?,?)');
+const insertDatacenter = db.prepare('INSERT OR IGNORE INTO datacenters VALUES (?,?,?)');
 const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');
 
 Promise.all([
-  readFileAsync(`${distPath}/bad-ips.netset`, fsParams),
+  readFileAsync(`${distPath}/blacklisted.netset`, fsParams),
   readFileAsync(`${distPath}/datacenters.netset`, fsParams),
   readFileAsync(`${distPath}/countries.csv`, fsParams)
 ])
-  .then(([badIps, dcIps, countryIps]) => {
-    const allBlocks = [].concat(badIps.split(/\r?\n/), dcIps.split(/\r?\n/));
-
+  .then(([blacklistedIps, datacenterIps, countryIps]) => {
+    db.exec('BEGIN TRANSACTION;');
     countryIps.split(/\r?\n/).forEach((line) => {
       const [cidr, country] = line.split(',');
 
@@ -58,15 +60,26 @@ Promise.all([
         insertCountry.run(start, first, last, country);
       }
     });
+    db.exec('COMMIT;');
 
-    allBlocks.forEach((cidr) => {
+    db.exec('BEGIN TRANSACTION;');
+    blacklistedIps.split(/\r?\n/).forEach((cidr) => {
       const [first, last] = calculateRange(cidr);
       const start = (first >> 24) & 0xFF;
 
-      insertIp.run(start, first, last);
+      insertBlacklisted.run(start, first, last);
     });
+    db.exec('COMMIT;');
+
+    db.exec('BEGIN TRANSACTION;');
+    datacenterIps.split(/\r?\n/).forEach((cidr) => {
+      const [first, last] = calculateRange(cidr);
+      const start = (first >> 24) & 0xFF;
+
+      insertDatacenter.run(start, first, last);
+    });
+    db.exec('COMMIT;');
   })
   .then(() => {
-    db.exec('COMMIT;');
     db.exec('VACUUM;');
   });

@@ -28,17 +28,17 @@ do
   sed "s/\$/,$country/" ${file} |  grep -E '^[0-9]+' >> dist/countries.csv
 done
 
-echo Building datacenter blocklist...
+echo Building datacenter ranges...
 grep -E -i -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -E -i -v -f patterns/good.csv | cut -d'"' -f6 > dist/datacenters.netset
 sort -u -o dist/datacenters.netset dist/datacenters.netset
 sed -i '/^[^0-9]/d' dist/datacenters.netset
 
-echo Building IP blocklist...
-sort -u dist/blocklist-ipsets-master/*set >dist/bad-ips.netset
-sed -i '/^[^0-9]/d' dist/bad-ips.netset
+echo Building blacklisted ranges...
+sort -u dist/blocklist-ipsets-master/*set >dist/blacklisted.netset
+sed -i '/^[^0-9]/d' dist/blacklisted.netset
 
 echo Done!
 
 wc -l dist/datacenters.netset
-wc -l dist/bad-ips.netset
+wc -l dist/blacklisted.netset
 wc -l dist/countries.csv
