@@ -13,14 +13,20 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 
 ## Usage in node
 
+Build the sqlite database
+```shell script
+npm run buildDb
+```
+
+
 ```javascript
-const BlockList = require('bad-ip-blocklist');
+const IpInfo = require('./index');
 
-const bl = new BlockList();
+const bl = new IpInfo('../dist/ipinfo.db');
 
-bl.build().then(() => {
-  console.log(bl.contains('0.0.0.0')); // true
-});
+console.log('Datacenter', bl.isDatacenter('99.99.62.249'));
+console.log('Blacklisted', bl.isBlacklisted('99.99.62.249'));
+console.log('Country', bl.getCountry('99.99.62.249'));
 ```
 
 If the IP is found in the database it would return `true` and `false` otherwise.
