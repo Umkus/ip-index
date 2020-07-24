@@ -32,23 +32,38 @@ db.pragma('auto_vacuum = FULL;');
 db.pragma('automatic_index = off;');
 
 db.exec('DROP TABLE IF EXISTS ips;');
+db.exec('DROP TABLE IF EXISTS countries;');
 db.exec('CREATE TABLE ips (start TINYINT, first INT, last INT);');
+db.exec('CREATE TABLE countries (start TINYINT, first INT, last INT, country CHAR(2));');
 db.exec('CREATE INDEX ip_uniq ON ips (start, first, last)');
+db.exec('CREATE INDEX country_uniq ON countries (start, first, last)');
 db.exec('BEGIN TRANSACTION;');
-const insert = db.prepare('INSERT OR IGNORE INTO ips VALUES (?,?,?)');
+const insertIp = db.prepare('INSERT OR IGNORE INTO ips VALUES (?,?,?)');
+const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');
 
 Promise.all([
   readFileAsync(`${distPath}/bad-ips.netset`, fsParams),
-  readFileAsync(`${distPath}/datacenters.netset`, fsParams)
+  readFileAsync(`${distPath}/datacenters.netset`, fsParams),
+  readFileAsync(`${distPath}/countries.csv`, fsParams)
 ])
-  .then(([badIps, dcIps]) => {
-    const allIps = [].concat(badIps.split(/\r?\n/), dcIps.split(/\r?\n/));
+  .then(([badIps, dcIps, countryIps]) => {
+    const allBlocks = [].concat(badIps.split(/\r?\n/), dcIps.split(/\r?\n/));
 
-    allIps.forEach((cidr) => {
+    countryIps.split(/\r?\n/).forEach((line) => {
+      const [cidr, country] = line.split(',');
+
+      if (cidr && country) {
+        const [first, last] = calculateRange(cidr);
+        const start = (first >> 24) & 0xFF;
+        insertCountry.run(start, first, last, country);
+      }
+    });
+
+    allBlocks.forEach((cidr) => {
       const [first, last] = calculateRange(cidr);
       const start = (first >> 24) & 0xFF;
 
-      insert.run(start, first, last);
+      insertIp.run(start, first, last);
     });
   })
   .then(() => {

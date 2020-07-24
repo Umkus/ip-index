@@ -13,7 +13,8 @@ class BlockList {
     db.pragma('synchronous = off;');
     db.pragma('automatic_index = off;');
 
-    this.select = db.prepare('SELECT 1 FROM ips WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectIps = db.prepare('SELECT 1 FROM ips WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectCountries = db.prepare('SELECT country FROM countries WHERE start = ? AND ? between first AND last LIMIT 1');
   }
 
   ip2int(ip) {
@@ -50,7 +51,14 @@ class BlockList {
     const start = +ip.split('.')[0];
     const ipInt = this.ip2int(ip);
 
-    return !!this.select.pluck().get(start, ipInt);
+    return !!this.selectIps.pluck().get(start, ipInt);
+  }
+
+  getCountry(ip) {
+    const start = +ip.split('.')[0];
+    const ipInt = this.ip2int(ip);
+
+    return this.selectCountries.pluck().get(start, ipInt);
   }
 }
 
