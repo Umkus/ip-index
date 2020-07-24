@@ -1,6 +1,6 @@
 {
   "name": "bad-ip-blocklist",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "repository": "https://github.com/Umkus/bad-ip-blocklist.git",
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
