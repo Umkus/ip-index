@@ -54,4 +54,9 @@ queries: 1.587ms
 * [Firehol](https://github.com/firehol/blocklist-ipsets)
 * [ip2location ASN DB](https://lite.ip2location.com/database/ip-asn)
 * [This list of DC names](https://udger.com/resources/datacenter-list)
-* [This list of ASNs](https://github.com/brianhama/bad-asn-list/blob/master/bad-asn-list.csv)
+* [This list of ASNs](https://github.com/brianhama/bad-asn-list)
+* [This list of web-hosting companies](https://github.com/linuxclark/web-hosting-companies)
+
+## Acknowledgments
+* This product includes IP2Location LITE data available from [http://www.ip2location.com](http://www.ip2location.com).
+* This product includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).
