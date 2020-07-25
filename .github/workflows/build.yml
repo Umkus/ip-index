@@ -25,7 +25,7 @@ jobs:
           message: Updated blocklists
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: npm version patch --no-git-tag-version
+      - run: npm version patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: EndBug/add-and-commit@v4
