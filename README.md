@@ -15,18 +15,39 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 
 Build the sqlite database
 ```shell script
+npm install
 npm run buildDb
 ```
 
+Run the [example file](src/example.js):
+
+```shell script
+node ./src/example.js`
+```
 
 ```javascript
+// ./src/example.js
+
 const IpInfo = require('./index');
 
-const bl = new IpInfo('../dist/ipinfo.db');
+console.time('init');
+const ip = new IpInfo('../dist/ipinfo.db');
+console.timeEnd('init');
 
-console.log('Datacenter', bl.isDatacenter('1.1.1.1')); // true
-console.log('Blacklisted', bl.isBlacklisted('1.1.1.1')); // true
-console.log('Country', bl.getCountry('1.1.1.1')); // "au"
+console.time('queries');
+console.log('Datacenter:', ip.isDatacenter('1.1.1.1'));
+console.log('Blacklisted:', ip.isBlacklisted('1.1.1.1'));
+console.log('Country:', ip.getCountry('1.1.1.1'));
+console.timeEnd('queries');
+```
+
+Output:
+```
+init: 1.099ms
+Datacenter: true
+Blacklisted: true
+Country: au
+queries: 1.250ms
 ```
 
 ## Used projects
