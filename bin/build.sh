@@ -13,8 +13,8 @@ echo Downloading firehol blocklists...
 curl --location --request GET https://github.com/firehol/blocklist-ipsets/archive/master.zip >dist/firehol.zip
 
 echo Preparing...
-unzip -o dist/asns.zip -d dist
-unzip -o dist/firehol.zip -d dist
+unzip -q -o dist/asns.zip -d dist
+unzip -q -o dist/firehol.zip -d dist
 
 rm -f dist/blocklist-ipsets-master/iblocklist_isp*
 rm -f dist/blocklist-ipsets-master/firehol_level4.netset
@@ -30,17 +30,23 @@ done
 
 echo Building datacenter ranges...
 grep -E -i -f patterns/bad.csv -f patterns/companies.csv dist/IP2LOCATION-LITE-ASN.CSV | grep -E -i -v -f patterns/good.csv | cut -d'"' -f6 > dist/datacenters.netset
+echo Sorting datacenter ranges...
 sort -u -o dist/datacenters.netset dist/datacenters.netset
+echo Cleaning datacenter ranges...
 sed -i '/^[^0-9]/d' dist/datacenters.netset
 
 echo Building blacklisted ranges...
 sort -u dist/blocklist-ipsets-master/*set >dist/blacklisted.netset
+echo Cleaning blacklisted ranges...
 sed -i '/^[^0-9]/d' dist/blacklisted.netset
 
-node ./bin/buildDb.js
+echo Building Sqlite DB...
+npm install
+npm run buildDb
 
 echo Done!
 
 wc -l dist/datacenters.netset
 wc -l dist/blacklisted.netset
 wc -l dist/countries.csv
+ls -lsha dist/
