@@ -1,8 +1,9 @@
 name: Deploy to AWS
 
 on:
-  schedule:
-    - cron:  '0 0 * * *'
+  push:
+    tags:
+      - v*
 
 jobs:
   deploy:
