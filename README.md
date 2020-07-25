@@ -9,7 +9,7 @@ To generate your own fresh blocklist run:
 $ TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} ./bin/build.sh
 ```
 
-You can get your free token on [https://lite.ip2location.com/](https://lite.ip2location.com/).  
+You can get your free token on [https://lite.ip2location.com/](https://lite.ip2location.com/).
 
 ## Usage in node
 
@@ -24,12 +24,10 @@ const IpInfo = require('./index');
 
 const bl = new IpInfo('../dist/ipinfo.db');
 
-console.log('Datacenter', bl.isDatacenter('99.99.62.249'));
-console.log('Blacklisted', bl.isBlacklisted('99.99.62.249'));
-console.log('Country', bl.getCountry('99.99.62.249'));
+console.log('Datacenter', bl.isDatacenter('1.1.1.1')); // true
+console.log('Blacklisted', bl.isBlacklisted('1.1.1.1')); // true
+console.log('Country', bl.getCountry('1.1.1.1')); // "au"
 ```
-
-If the IP is found in the database it would return `true` and `false` otherwise.
 
 ## Used projects
 
