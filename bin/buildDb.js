@@ -9,7 +9,7 @@ const dbPath = `${distPath}/ipinfo.db`;
 try {
   unlinkSync(dbPath);
 } catch (e) {
-  console.log(e);
+  // console.log(e);
 }
 
 function ip2int(ip) {
