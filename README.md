@@ -13,10 +13,9 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 
 ## Usage in node
 
-Build the sqlite database
+Install dependencies
 ```shell script
 npm install
-npm run buildDb
 ```
 
 Run the [example file](src/example.js):
