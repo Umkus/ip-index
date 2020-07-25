@@ -19,23 +19,14 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      #- run: ./bin/build.sh
-      #  env:
-      #    TOKEN: ${{ secrets.TOKEN }}
-      #- uses: EndBug/add-and-commit@v4
-      #  with:
-      #    add: .
-      #    message: Updated blocklists
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Building lists
+        run: ./bin/build.sh
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: .
+          message: Updated blocklists
       - name: New version and tag
         run: npm version patch
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #- uses: EndBug/add-and-commit@v4
-      #  with:
-      #    add: .
-      #    message: 'Publishing new version'
       - name: Publish new NPM package version
         run: npm publish
         env:
