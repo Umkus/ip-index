@@ -22,20 +22,24 @@ jobs:
       #- run: ./bin/build.sh
       #  env:
       #    TOKEN: ${{ secrets.TOKEN }}
-      - uses: EndBug/add-and-commit@v4
-        with:
-          add: .
-          message: Updated blocklists
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- uses: EndBug/add-and-commit@v4
+      #  with:
+      #    add: .
+      #    message: Updated blocklists
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm version patch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: EndBug/add-and-commit@v4
-        with:
-          add: .
-          message: 'Publishing new version'
+        name: New version and tag
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- uses: EndBug/add-and-commit@v4
+      #  with:
+      #    add: .
+      #    message: 'Publishing new version'
+      - run: git push --follow-tags
+        name: Push changes and the new tag
       - run: npm publish
+        name: Publish new NPM package version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
