@@ -3,7 +3,7 @@ const { promisify } = require('util');
 
 const sqlite3 = require('better-sqlite3');
 
-const distPath = `${__dirname}/../dist/`;
+const distPath = `${__dirname}/../dist`;
 const dbPath = `${distPath}/ipinfo.db`;
 
 try {
