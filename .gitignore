@@ -4,6 +4,7 @@ data/sets/
 data/IP2LOCATION-LITE-ASN.CSV
 dist/*
 !dist/*.netset
+!dist/*.db
 !dist/countries.csv
 mysq/
 node_modules/

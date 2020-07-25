@@ -37,9 +37,11 @@ db.exec('DROP TABLE IF EXISTS datacenters;');
 db.exec('CREATE TABLE blacklisted (start TINYINT, first INT, last INT);');
 db.exec('CREATE TABLE datacenters (start TINYINT, first INT, last INT);');
 db.exec('CREATE TABLE countries (start TINYINT, first INT, last INT, country CHAR(2));');
-db.exec('CREATE INDEX blacklisted_uniq ON blacklisted (start, first, last)');
-db.exec('CREATE INDEX countries_uniq ON countries (start, first, last)');
-db.exec('CREATE INDEX datacenters_uniq ON datacenters (start, first, last)');
+// TODO: Figure out why indices don't help with range queries
+// TODO: Indices double the size of the database (70 -> 140 MB)
+// db.exec('CREATE INDEX blacklisted_uniq ON blacklisted (start, first, last)');
+// db.exec('CREATE INDEX countries_uniq ON countries (start, first, last)');
+// db.exec('CREATE INDEX datacenters_uniq ON datacenters (start, first, last)');
 const insertBlacklisted = db.prepare('INSERT OR IGNORE INTO blacklisted VALUES (?,?,?)');
 const insertDatacenter = db.prepare('INSERT OR IGNORE INTO datacenters VALUES (?,?,?)');
 const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');

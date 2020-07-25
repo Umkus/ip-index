@@ -43,11 +43,11 @@ console.timeEnd('queries');
 
 Output:
 ```
-init: 1.099ms
+init: 0.980ms
 Datacenter: true
 Blacklisted: true
 Country: au
-queries: 1.250ms
+queries: 1.587ms
 ```
 
 ## Used projects
