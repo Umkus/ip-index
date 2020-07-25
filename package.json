@@ -1,12 +1,35 @@
 {
   "name": "bad-ip-blocklist",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "repository": "https://github.com/Umkus/bad-ip-blocklist.git",
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
   "main": "src/index.js",
   "scripts": {
-    "buildDb": "node ./bin/buildDb.js ./dist/"
+    "deps:install": "npm install",
+    "deps:update": "npm update && npm audit fix -f",
+    "db:build": "node ./bin/buildDb.js",
+    "app:lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "app:build": "node ./node_modules/webpack/bin/webpack.js --env.NODE_ENV=production",
+    "cf:build": "aws cloudformation package --s3-bucket unsee-artifacts --template-file cloudformation/application.yaml --output-template-file dist/application.yaml",
+    "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-info --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "aws-sdk": "2.631.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-latest-node": "^4.1.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.0.0",
+    "ignore-assets-webpack-plugin": "^2.0.1",
+    "webpack": "^4.44.0",
+    "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "better-sqlite3": "^7.1.0"

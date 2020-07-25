@@ -1,0 +1,33 @@
+name: Deploy to AWS
+
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Installing latest deps
+        run: npm run deps:install
+      - name: Linting code
+        run: npm run app:lint
+      - name: Building blocklist DB
+        run: npm run db:build
+      - name: Building lambda
+        run: npm run app:build
+      - name: Building CloudFormation template
+        run: npm run cf:build
+      - name: Deploying
+        run: npm run cf:deploy

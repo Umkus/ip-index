@@ -1,5 +1,6 @@
-const {readFile, unlinkSync} = require('fs');
-const {promisify} = require('util');
+const { readFile, unlinkSync } = require('fs');
+const { promisify } = require('util');
+
 const sqlite3 = require('better-sqlite3');
 
 const distPath = `${__dirname}/../dist/`;
@@ -7,6 +8,7 @@ const distPath = `${__dirname}/../dist/`;
 try {
   unlinkSync(distPath);
 } catch (e) {
+  console.log(e);
 }
 
 function ip2int(ip) {
@@ -24,7 +26,7 @@ function calculateRange(cidr) {
 const db = sqlite3(`${distPath}/ipinfo.db`);
 
 const readFileAsync = promisify(readFile);
-const fsParams = {encoding: 'ascii'};
+const fsParams = { encoding: 'ascii' };
 
 db.pragma('journal_mode = memory;');
 db.pragma('synchronous = off;');
@@ -49,7 +51,7 @@ const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,
 Promise.all([
   readFileAsync(`${distPath}/blacklisted.netset`, fsParams),
   readFileAsync(`${distPath}/datacenters.netset`, fsParams),
-  readFileAsync(`${distPath}/countries.csv`, fsParams)
+  readFileAsync(`${distPath}/countries.csv`, fsParams),
 ])
   .then(([blacklistedIps, datacenterIps, countryIps]) => {
     db.exec('BEGIN TRANSACTION;');

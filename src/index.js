@@ -1,5 +1,9 @@
 const sqlite3 = require('better-sqlite3');
 
+function ip2int(ip) {
+  return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
+}
+
 class IpInfo {
   constructor(dbFile = '../dist/ipinfo.db') {
     const db = sqlite3(dbFile);
@@ -13,27 +17,23 @@ class IpInfo {
     this.selectCountries = db.prepare('SELECT country FROM countries WHERE start = ? AND ? between first AND last LIMIT 1');
   }
 
-  ip2int(ip) {
-    return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
-  }
-
   isBlacklisted(ip) {
     const start = +ip.split('.')[0];
-    const ipInt = this.ip2int(ip);
+    const ipInt = ip2int(ip);
 
     return !!this.selectBlacklists.pluck().get(start, ipInt);
   }
 
   isDatacenter(ip) {
     const start = +ip.split('.')[0];
-    const ipInt = this.ip2int(ip);
+    const ipInt = ip2int(ip);
 
     return !!this.selectDatacenters.pluck().get(start, ipInt);
   }
 
   getCountry(ip) {
     const start = +ip.split('.')[0];
-    const ipInt = this.ip2int(ip);
+    const ipInt = ip2int(ip);
 
     return this.selectCountries.pluck().get(start, ipInt);
   }
