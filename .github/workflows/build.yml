@@ -29,14 +29,14 @@ jobs:
         run: npm run deps:install
       - name: Linting code
         run: npm run app:lint
-      #- name: Building lists
-      #  run: ./bin/build.sh
-      #  env:
-      #    TOKEN: ${{ secrets.TOKEN }}
-      #- uses: EndBug/add-and-commit@v4
-      #  with:
-      #    add: .
-      #    message: Updated blocklists
+      - name: Building lists
+        run: ./bin/build.sh
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: .
+          message: Updated blocklists
       - name: New version and tag
         run: npm version patch
       - name: Publish new NPM package version
