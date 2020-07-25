@@ -4,9 +4,10 @@ const { promisify } = require('util');
 const sqlite3 = require('better-sqlite3');
 
 const distPath = `${__dirname}/../dist/`;
+const dbPath = `${distPath}/ipinfo.db`;
 
 try {
-  unlinkSync(distPath);
+  unlinkSync(dbPath);
 } catch (e) {
   console.log(e);
 }
@@ -23,7 +24,7 @@ function calculateRange(cidr) {
   return [min, max];
 }
 
-const db = sqlite3(`${distPath}/ipinfo.db`);
+const db = sqlite3(dbPath);
 
 const readFileAsync = promisify(readFile);
 const fsParams = { encoding: 'ascii' };
