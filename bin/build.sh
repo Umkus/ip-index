@@ -40,10 +40,6 @@ sort -u dist/blocklist-ipsets-master/*set >dist/blacklisted.netset
 echo Cleaning blacklisted ranges...
 sed -i '/^[^0-9]/d' dist/blacklisted.netset
 
-echo Building Sqlite DB...
-npm install
-npm run buildDb
-
 echo Done!
 
 wc -l dist/datacenters.netset
