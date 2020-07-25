@@ -37,6 +37,8 @@ echo Building blacklisted ranges...
 sort -u dist/blocklist-ipsets-master/*set >dist/blacklisted.netset
 sed -i '/^[^0-9]/d' dist/blacklisted.netset
 
+node ./bin/buildDb.js
+
 echo Done!
 
 wc -l dist/datacenters.netset
