@@ -1,10 +1,10 @@
 const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
-const matches = require('./matches');
 const axios = require('axios');
 const path = require('path');
 const extract = require('extract-zip');
 const sqlite3 = require('better-sqlite3');
+const matches = require('./matches');
 
 const { TOKEN } = process.env;
 const fsParams = { encoding: 'ascii' };
@@ -45,9 +45,6 @@ const insertBlacklisted = db.prepare('INSERT OR IGNORE INTO blacklisted VALUES (
 const insertDatacenter = db.prepare('INSERT OR IGNORE INTO datacenters VALUES (?,?,?)');
 const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');
 
-// db.exec('BEGIN TRANSACTION;');
-// db.exec('COMMIT;');
-
 async function getZip(url, dest) {
   console.log(`Downloading ${dest}...`);
 
@@ -68,13 +65,9 @@ async function getZip(url, dest) {
   return true;
 }
 
-function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
-}
-
 async function main() {
-  // await getZip(`https://www.ip2location.com/download/?token=${TOKEN}&file=DBASNLITE`, 'asns');
-  // await getZip(`https://github.com/firehol/blocklist-ipsets/archive/master.zip`, 'firehol');
+  await getZip(`https://www.ip2location.com/download/?token=${TOKEN}&file=DBASNLITE`, 'asns');
+  await getZip('https://github.com/firehol/blocklist-ipsets/archive/master.zip', 'firehol');
 
   console.log('Building blacklisted ranges...');
 
@@ -92,6 +85,8 @@ async function main() {
           blacklistedRanges.add(cidr);
         }
       });
+
+    return true;
   });
 
   db.exec('BEGIN TRANSACTION;');
@@ -108,7 +103,7 @@ async function main() {
 
   console.log('Building country ranges...');
 
-  let countryRanges = [];
+  const countryRanges = [];
   const countryDir = `${distPath}/firehol/blocklist-ipsets-master/geolite2_country`;
 
   db.exec('BEGIN TRANSACTION;');
@@ -122,7 +117,7 @@ async function main() {
 
       fs.readFileSync(`${countryDir}/${file}`, fsParams)
         .split(/\r?\n/)
-        .map((cidr) => {
+        .forEach((cidr) => {
           if (/^[0-9]/.test(cidr)) {
             countryRanges.push(`${cidr},${country}`);
             const [first, last] = calculateRange(cidr);
@@ -130,6 +125,8 @@ async function main() {
             insertCountry.run(start, first, last, country);
           }
         });
+
+      return true;
     });
   db.exec('COMMIT;');
 
@@ -160,6 +157,8 @@ async function main() {
     if (matches.bad.find((badPattern) => badPattern.test(item.name))) {
       return true;
     }
+
+    return false;
   });
 
   db.exec('BEGIN TRANSACTION;');
