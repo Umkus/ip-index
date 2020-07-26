@@ -30,7 +30,7 @@ jobs:
       - name: Linting code
         run: npm run app:lint
       - name: Building lists
-        run: ./bin/build.sh
+        run: npm run db:build
         env:
           TOKEN: ${{ secrets.TOKEN }}
       - uses: EndBug/add-and-commit@v4
@@ -46,8 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push changes and the new tag
         run: git push --follow-tags
-      - name: Building blocklist DB
-        run: npm run db:build
       - name: Building lambda
         run: npm run app:build
       - name: Building CloudFormation template

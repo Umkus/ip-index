@@ -1,6 +1,6 @@
 {
   "name": "bad-ip-blocklist",
-  "version": "5.0.11",
+  "version": "5.1.0",
   "repository": "https://github.com/Umkus/bad-ip-blocklist.git",
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
@@ -8,13 +8,16 @@
   "scripts": {
     "deps:install": "npm install",
     "deps:update": "npm update && npm audit fix -f",
-    "db:build": "node ./bin/buildDb.js",
+    "db:build": "node src/build.js",
     "app:lint": "node ./node_modules/eslint/bin/eslint.js .",
     "app:build": "node ./node_modules/webpack/bin/webpack.js --env.NODE_ENV=production",
     "cf:build": "aws cloudformation package --s3-bucket unsee-artifacts --template-file cloudformation/application.yaml --output-template-file dist/application.yaml",
     "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-info --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
   },
   "devDependencies": {
+    "extract-zip": "^2.0.1",
+    "axios": "^0.19.2",
+    "csv-parse": "^4.11.1",
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "aws-sdk": "2.631.0",
