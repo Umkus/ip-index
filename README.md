@@ -1,4 +1,4 @@
-# Bad IPs blocklist
+# IP Index
 A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting and shows geo info.
 
 ## Building
