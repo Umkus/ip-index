@@ -14,6 +14,7 @@ export async function handler(event) {
       isDatacenter: ipIndex.isDatacenter(ip),
       isEu: eu.includes(country),
       country,
+      asn: ipIndex.getAsn(ip),
     }),
   };
 }
