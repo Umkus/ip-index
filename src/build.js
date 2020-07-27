@@ -9,7 +9,7 @@ const matches = require('./matches');
 const { TOKEN } = process.env;
 const fsParams = { encoding: 'ascii' };
 const distPath = `${__dirname}/../dist`;
-const dbPath = `${distPath}/ipinfo.db`;
+const dbPath = `${distPath}/ip-index.db`;
 
 function ip2int(ip) {
   return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;

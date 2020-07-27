@@ -1,4 +1,4 @@
-Description: IP info service
+Description: IP index service
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
   PolicyLambda:
@@ -30,10 +30,10 @@ Resources:
       ManagedPolicyArns:
         - !Ref PolicyLambda
 
-  LambdaIpInfo:
+  LambdaIpIndex:
     Type: AWS::Lambda::Function
     Properties:
-      Code: ../dist/lambda/ip-info/
+      Code: ../dist/lambda/ip-index/
       Description: Fetches IP information
       Environment:
         Variables:
@@ -50,16 +50,16 @@ Resources:
     Type: AWS::Lambda::Permission
     DependsOn:
       - RestApi
-      - LambdaIpInfo
+      - LambdaIpIndex
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref LambdaIpInfo
+      FunctionName: !Ref LambdaIpIndex
       Principal: apigateway.amazonaws.com
 
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: ip-info
+      Name: ip-index
       Description: Returns info about an IP
 
   RestApiLogsRole:
@@ -122,7 +122,7 @@ Resources:
             ResponseTemplates:
               application/json: ''
         PassthroughBehavior: WHEN_NO_MATCH
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaIpInfo.Arn}/invocations
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaIpIndex.Arn}/invocations
       RestApiId: !Ref RestApi
       MethodResponses:
         - StatusCode: 200

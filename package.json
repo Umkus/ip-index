@@ -1,7 +1,7 @@
 {
-  "name": "bad-ip-blocklist",
-  "version": "5.1.1",
-  "repository": "https://github.com/Umkus/bad-ip-blocklist.git",
+  "name": "ip-index",
+  "version": "0.0.1",
+  "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
   "main": "src/index.js",
@@ -12,7 +12,7 @@
     "app:lint": "node ./node_modules/eslint/bin/eslint.js .",
     "app:build": "node ./node_modules/webpack/bin/webpack.js --env.NODE_ENV=production",
     "cf:build": "aws cloudformation package --s3-bucket unsee-artifacts --template-file cloudformation/application.yaml --output-template-file dist/application.yaml",
-    "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-info --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
+    "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-index --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
   },
   "devDependencies": {
     "extract-zip": "^2.0.1",

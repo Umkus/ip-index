@@ -12,7 +12,7 @@ module.exports = () => [
     },
     watch: false,
     entry: {
-      'lambda/ip-info/index': './src/lambda/ip-info',
+      'lambda/ip-index/index': './src/lambda/ip-index',
     },
     module: {
       rules: [
@@ -27,7 +27,7 @@ module.exports = () => [
         {
           flatten: true,
           from: './dist/*.db',
-          to: 'lambda/ip-info',
+          to: 'lambda/ip-index',
         },
       ]),
     ],

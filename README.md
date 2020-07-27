@@ -1,7 +1,5 @@
 # Bad IPs blocklist
-
-IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers.
-The files are located in `dist/` directory.
+A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting and shows geo info.
 
 ## Building
 To generate your own fresh blocklist run:
@@ -15,33 +13,14 @@ You can get your free token on [https://lite.ip2location.com/](https://lite.ip2l
 
 Install dependencies and generate a DB
 ```shell script
-npm install
-npm run buildDb
+npm run deps:install
+npm run db:build
 ```
 
 Run the [example file](src/example.js):
 
 ```shell script
 node ./src/example.js`
-```
-
-```javascript
-// ./src/example.js
-
-const IpInfo = require('./index');
-
-console.time('init');
-const ipInfo = new IpInfo('../dist/ipinfo.db');
-console.timeEnd('init');
-
-const ip = '93.201.96.204';
-
-console.time('queries');
-console.log('Datacenter:', ipInfo.isDatacenter(ip));
-console.log('Blacklisted:', ipInfo.isBlacklisted(ip));
-console.log('Country:', ipInfo.getCountry(ip));
-console.timeEnd('queries');
-
 ```
 
 Output:

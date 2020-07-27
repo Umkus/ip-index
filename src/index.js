@@ -4,8 +4,8 @@ function ip2int(ip) {
   return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
 }
 
-class IpInfo {
-  constructor(dbFile = '../dist/ipinfo.db') {
+class IpIndex {
+  constructor(dbFile = '../dist/ip-index.db') {
     const db = sqlite3(dbFile);
 
     db.pragma('journal_mode = memory;');
@@ -39,4 +39,4 @@ class IpInfo {
   }
 }
 
-module.exports = IpInfo;
+module.exports = IpIndex;
