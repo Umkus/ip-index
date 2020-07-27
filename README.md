@@ -1,20 +1,12 @@
 # IP Index
 A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting and shows geo info.
 
-## Building
-To generate your own fresh blocklist run:
-```shell script
-$ TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} ./bin/build.sh
-```
-
-You can get your free token on [https://lite.ip2location.com/](https://lite.ip2location.com/).
-
-## Usage in node
+## Usage
 
 Install dependencies and generate a DB
 ```shell script
 npm run deps:install
-npm run db:build
+TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} npm run db:build
 ```
 
 Run the [example file](src/example.js):
