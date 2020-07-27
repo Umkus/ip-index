@@ -25,11 +25,12 @@ node ./src/example.js`
 
 Output:
 ```
-init: 1.059ms
+init: 1.074ms
 Datacenter: false
 Blacklisted: true
 Country: de
-queries: 2.131ms
+Asn: { id: 3320, name: 'Deutsche Telekom AG' }
+queries: 3.759ms
 ```
 
 ## Used projects

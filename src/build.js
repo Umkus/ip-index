@@ -33,17 +33,21 @@ db.pragma('automatic_index = off;');
 db.exec('DROP TABLE IF EXISTS blacklisted;');
 db.exec('DROP TABLE IF EXISTS countries;');
 db.exec('DROP TABLE IF EXISTS datacenters;');
+db.exec('DROP TABLE IF EXISTS asns;');
 db.exec('CREATE TABLE blacklisted (start TINYINT, first INT, last INT);');
 db.exec('CREATE TABLE datacenters (start TINYINT, first INT, last INT);');
 db.exec('CREATE TABLE countries (start TINYINT, first INT, last INT, country CHAR(2));');
+db.exec('CREATE TABLE asns (start TINYINT, first INT, last INT, id INT, name VARCHAR(64));');
 // TODO: Figure out why indices don't help with range queries
 // TODO: Indices double the size of the database (70 -> 140 MB)
 db.exec('CREATE INDEX blacklisted_uniq ON blacklisted (start, first, last)');
 db.exec('CREATE INDEX countries_uniq ON countries (start, first, last)');
 db.exec('CREATE INDEX datacenters_uniq ON datacenters (start, first, last)');
+db.exec('CREATE INDEX asns_uniq ON asns (start, first, last)');
 const insertBlacklisted = db.prepare('INSERT OR IGNORE INTO blacklisted VALUES (?,?,?)');
 const insertDatacenter = db.prepare('INSERT OR IGNORE INTO datacenters VALUES (?,?,?)');
 const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');
+const insertAsn = db.prepare('INSERT OR IGNORE INTO asns VALUES (?,?,?,?, ?)');
 
 async function getZip(url, dest) {
   console.log(`Downloading ${dest}...`);
@@ -141,7 +145,12 @@ async function main() {
     columns: ['first', 'last', 'cidr', 'id', 'name'],
   });
 
+  db.exec('BEGIN TRANSACTION;');
   const dcAsns = asns.filter((item) => {
+    const [first, last] = calculateRange(item.cidr);
+    const start = (first >> 24) & 0xFF;
+    insertAsn.run(start, first, last, item.id, item.name);
+
     if (item.id === '-') {
       return true;
     }
@@ -160,6 +169,7 @@ async function main() {
 
     return false;
   });
+  db.exec('COMMIT;');
 
   db.exec('BEGIN TRANSACTION;');
   dcAsns.forEach((item) => {

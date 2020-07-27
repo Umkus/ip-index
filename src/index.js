@@ -13,7 +13,8 @@ class IpIndex {
     db.pragma('automatic_index = off;');
 
     this.selectBlacklists = db.prepare('SELECT 1 FROM blacklisted WHERE start = ? AND ? between first AND last LIMIT 1');
-    this.selectDatacenters = db.prepare('SELECT 1 FROM datacenters WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectDatacenters = db.prepare('SELECT * FROM datacenters WHERE start = ? AND ? between first AND last LIMIT 1');
+    this.selectAsns = db.prepare('SELECT * FROM asns WHERE start = ? AND ? between first AND last LIMIT 1');
     this.selectCountries = db.prepare('SELECT country FROM countries WHERE start = ? AND ? between first AND last LIMIT 1');
   }
 
@@ -36,6 +37,24 @@ class IpIndex {
     const ipInt = ip2int(ip);
 
     return this.selectCountries.pluck().get(start, ipInt);
+  }
+
+  getAsn(ip) {
+    const start = +ip.split('.')[0];
+    const ipInt = ip2int(ip);
+
+    const data = this.selectAsns.raw().get(start, ipInt);
+
+    if (!data) {
+      return null;
+    }
+
+    const [id, name] = data.slice(3);
+
+    return {
+      id,
+      name,
+    };
   }
 }
 
