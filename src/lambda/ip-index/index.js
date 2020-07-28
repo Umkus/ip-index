@@ -1,20 +1,31 @@
-import IpIndex from '../../index';
-import eu from './eu.json';
+const IpIndex = require('../../index');
+const eu = require('./eu.json');
 
 const ipIndex = new IpIndex('./ip-index.db');
 
-export async function handler(event) {
-  const { ip } = (event.pathParameters || {});
-  const country = ipIndex.getCountry(ip);
+async function handler(event) {
+  const { ips } = (event.pathParameters || {});
+
+  const data = ips.split(',').map((ip) => {
+    const country = ipIndex.getCountry(ip);
+    const isBlacklisted = ipIndex.isBlacklisted(ip);
+    const isDatacenter = ipIndex.isDatacenter(ip);
+    const isEu = eu.includes(country);
+    const asn = ipIndex.getAsn(ip);
+
+    return {
+      isBlacklisted,
+      isDatacenter,
+      isEu,
+      country,
+      asn,
+    };
+  });
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      isBlacklisted: ipIndex.isBlacklisted(ip),
-      isDatacenter: ipIndex.isDatacenter(ip),
-      isEu: eu.includes(country),
-      country,
-      asn: ipIndex.getAsn(ip),
-    }),
+    body: JSON.stringify(data),
   };
 }
+
+module.exports = { handler };

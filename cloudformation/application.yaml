@@ -101,7 +101,7 @@ Resources:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId: !GetAtt RestApi.RootResourceId
-      PathPart: '{ip}'
+      PathPart: '{ips}'
       RestApiId: !Ref RestApi
 
   ResourceIpGet:
