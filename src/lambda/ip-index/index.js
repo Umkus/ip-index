@@ -4,14 +4,14 @@ const eu = require('./eu.json');
 const ipIndex = new IpIndex('./ip-index.db');
 
 async function handler(event) {
-  const { ips } = (event.pathParameters || {});
+  const { ip } = (event.pathParameters || {});
 
-  const data = ips.split(',').map((ip) => {
-    const country = ipIndex.getCountry(ip);
-    const isBlacklisted = ipIndex.isBlacklisted(ip);
-    const isDatacenter = ipIndex.isDatacenter(ip);
+  const data = ip.split(',').map((item) => {
+    const country = ipIndex.getCountry(item);
+    const isBlacklisted = ipIndex.isBlacklisted(item);
+    const isDatacenter = ipIndex.isDatacenter(item);
     const isEu = eu.includes(country);
-    const asn = ipIndex.getAsn(ip);
+    const asn = ipIndex.getAsn(item);
 
     return {
       isBlacklisted,
