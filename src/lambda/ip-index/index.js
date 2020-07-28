@@ -14,6 +14,7 @@ async function handler(event) {
     const asn = ipIndex.getAsn(item);
 
     return {
+      ip: item,
       isBlacklisted,
       isDatacenter,
       isEu,
