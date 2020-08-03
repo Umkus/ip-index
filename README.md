@@ -5,9 +5,7 @@ A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting 
 
 * [This list](https://udger.com/resources/datacenter-list) of Datacenters was manually converted to a list of ASNs.
 * The ASNs from [these](https://github.com/linuxclark/web-hosting-companies) [lists](https://github.com/brianhama/bad-asn-list) were added.
-* List of all ASNs names is being parsed for any keyword matches that would give away datacenters or hosting
-
-Please see [src\matches.js](src\matches.js) for match patterns and a list of confirmed datacenter urls.
+* List of all ASNs names is [matched](src/matches.js) against keywords that would give away datacenters or hosting
 
 False positives are possible.
 
