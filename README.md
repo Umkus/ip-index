@@ -9,6 +9,19 @@ A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting 
 
 False positives are possible.
 
+## Sanity check
+
+Pick some random IPs:
+
+```shell script
+sort -R dist/datacenters.netset | head -n 5
+```
+
+Check against any of the known IP scoring services:
+* https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
+* https://www.ip2location.com/demo/1.1.1.1
+* https://scamalytics.com/ip/1.1.1.1
+
 ## Usage
 
 Install dependencies and generate a DB
