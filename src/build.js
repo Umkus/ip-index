@@ -152,7 +152,7 @@ async function main() {
     insertAsn.run(start, first, last, item.id, item.name);
 
     if (item.id === '-') {
-      return true;
+      // return true;
     }
 
     if (matches.asns.includes(+item.id)) {
