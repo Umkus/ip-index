@@ -24,6 +24,12 @@ async function handler(event) {
   });
 
   return {
+    headers: {
+      'X-Requested-With': '*',
+      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,OPTIONS'
+    },
     statusCode: 200,
     body: JSON.stringify(data),
   };
