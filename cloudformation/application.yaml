@@ -85,11 +85,11 @@ Resources:
   RestApiStage:
     Type: AWS::ApiGateway::Stage
     Properties:
-      DeploymentId: !Ref RestApiDeployment
+      DeploymentId: !Ref RestApiDeployment2
       RestApiId: !Ref RestApi
       StageName: v1
 
-  RestApiDeployment:
+  RestApiDeployment2:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - ResourceIp
