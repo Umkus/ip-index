@@ -82,20 +82,17 @@ Resources:
     Properties:
       CloudWatchRoleArn: !GetAtt RestApiLogsRole.Arn
 
-  RestApiStage:
-    Type: AWS::ApiGateway::Stage
-    Properties:
-      DeploymentId: !Ref RestApiDeployment2
-      RestApiId: !Ref RestApi
-      StageName: v1
-
-  RestApiDeployment2:
+  RestApiDeployment4:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - ResourceIp
       - ResourceIpGet
     Properties:
+      StageName: v1
       RestApiId: !Ref RestApi
+      StageDescription:
+        ThrottlingRateLimit: 500
+        ThrottlingBurstLimit: 500
 
   ResourceIp:
     Type: AWS::ApiGateway::Resource
