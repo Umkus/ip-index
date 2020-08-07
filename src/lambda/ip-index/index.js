@@ -4,7 +4,7 @@ const eu = require('./eu.json');
 const ipIndex = new IpIndex('./ip-index.db');
 
 async function handler(event) {
-  const { ip } = (event.pathParameters || {});
+  const { ip } = (event.pathParameters || { ip: event.requestContext.identity.sourceIp });
 
   const data = ip.split(',').map((item) => {
     const country = ipIndex.getCountry(item);
