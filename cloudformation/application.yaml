@@ -131,6 +131,33 @@ Resources:
           ResponseParameters:
             method.response.header.Access-Control-Allow-Origin: false
 
+  ResourceGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      HttpMethod: GET
+      ResourceId: !GetAtt RestApi.RootResourceId
+      AuthorizationType: NONE
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+        PassthroughBehavior: WHEN_NO_MATCH
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaIpIndex.Arn}/invocations
+      RestApiId: !Ref RestApi
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: false
+
 Outputs:
   ApiId:
     Value: !Ref RestApi
