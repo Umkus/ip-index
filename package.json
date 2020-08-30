@@ -15,14 +15,14 @@
     "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-index --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.11.4",
     "@babel/preset-env": "^7.11.0",
     "aws-sdk": "2.631.0",
     "axios": "^0.19.2",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-preset-latest-node": "^4.1.0",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^5.1.2",
     "csv-parse": "^4.12.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
