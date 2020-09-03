@@ -15,8 +15,8 @@
     "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-index --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.4",
-    "@babel/preset-env": "^7.11.0",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "aws-sdk": "2.631.0",
     "axios": "^0.19.2",
     "babel-eslint": "^10.0.3",
