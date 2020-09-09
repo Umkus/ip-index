@@ -57,7 +57,7 @@ module.exports = () => [
     target: 'node',
     watch: false,
     entry: {
-      [`${distPath}/index`]: `./src/index`,
+      [`${distPath}/index`]: './src/index',
     },
     plugins: [
       new CopyPlugin({
@@ -70,7 +70,7 @@ module.exports = () => [
       }),
       new ZipPlugin({
         filename: `${libName}-layer.zip`,
-      })
+      }),
     ],
     optimization: {
       minimize: false,
