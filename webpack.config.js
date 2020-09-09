@@ -63,6 +63,10 @@ module.exports = () => [
       new CopyPlugin({
         patterns: [
           {
+            from: 'node_modules/better-sqlite3/build',
+            to: `${distPath}/../../build`,
+          },
+          {
             from: 'dist/ip-index.db',
             to: `${distPath}/dist`,
           },
