@@ -30,6 +30,15 @@ Resources:
       ManagedPolicyArns:
         - !Ref PolicyLambda
 
+  LayerIpIndex:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - nodejs12.x
+      Content: ../dist/ip-index-layer.zip
+      Description: ip-index layer
+      LayerName: ip-index
+
   LambdaIpIndex:
     Type: AWS::Lambda::Function
     Properties:

@@ -1,5 +1,9 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const ZipPlugin = require('zip-webpack-plugin');
+
+const libName = 'ip-index';
+const distPath = `nodejs/node_modules/${libName}`;
 
 module.exports = () => [
   {
@@ -23,13 +27,15 @@ module.exports = () => [
       ],
     },
     plugins: [
-      new CopyPlugin([
-        {
-          flatten: true,
-          from: './dist/*.db',
-          to: 'lambda/ip-index',
-        },
-      ]),
+      new CopyPlugin({
+        patterns: [
+          {
+            flatten: true,
+            from: './dist/*.db',
+            to: 'lambda/ip-index',
+          },
+        ],
+      }),
     ],
     optimization: {
       minimize: false,
@@ -42,6 +48,37 @@ module.exports = () => [
     externals: {
       'aws-sdk': 'aws-sdk',
       'better-sqlite3': 'better-sqlite3',
+    },
+  },
+  {
+    name: 'layer',
+    mode: 'production',
+    stats: 'minimal',
+    target: 'node',
+    watch: false,
+    entry: {
+      [`${distPath}/index`]: `./src/index`,
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          {
+            from: 'dist/ip-index.db',
+            to: `${distPath}/dist`,
+          },
+        ],
+      }),
+      new ZipPlugin({
+        filename: `${libName}-layer.zip`,
+      })
+    ],
+    optimization: {
+      minimize: false,
+    },
+    output: {
+      filename: '[name].js',
+      path: path.resolve(__dirname, 'dist'),
+      libraryTarget: 'commonjs2',
     },
   },
 ];
