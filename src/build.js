@@ -23,6 +23,12 @@ function calculateRange(cidr) {
   return [min, max];
 }
 
+try {
+  fs.unlinkSync(dbPath);
+} catch (e) {
+  console.log(e);
+}
+
 const db = sqlite3(dbPath);
 
 db.pragma('journal_mode = memory;');
@@ -179,6 +185,8 @@ async function main() {
   db.exec('COMMIT;');
 
   fs.writeFileSync(`${distPath}/datacenters.netset`, dcAsns.map((item) => item.cidr).sort().join('\n'));
+
+  db.close();
 }
 
 main().catch(console.log);
