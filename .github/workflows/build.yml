@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron:  '0 0 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -33,6 +33,10 @@ jobs:
         run: npm run db:build
         env:
           TOKEN: ${{ secrets.TOKEN }}
+      - name: Gzipping db file
+        run: gzip dist/ip-index.db
+      - name: Listing dist files
+        run: ls -lsah dist/
       - uses: EndBug/add-and-commit@v4
         with:
           add: .
