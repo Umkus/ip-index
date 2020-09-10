@@ -34,7 +34,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
       - name: Gzipping db file
-        run: gzip dist/ip-index.db
+        run: gzip < dist/ip-index.db > dist/ip-index.db.gz
       - name: Listing dist files
         run: ls -lsah dist/
       - uses: EndBug/add-and-commit@v4
