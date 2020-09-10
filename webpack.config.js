@@ -1,9 +1,5 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const ZipPlugin = require('zip-webpack-plugin');
-
-const libName = 'ip-index';
-const distPath = `nodejs/node_modules/${libName}`;
 
 module.exports = () => [
   {
