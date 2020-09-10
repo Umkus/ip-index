@@ -50,39 +50,4 @@ module.exports = () => [
       'better-sqlite3': 'better-sqlite3',
     },
   },
-  {
-    name: 'layer',
-    mode: 'production',
-    stats: 'minimal',
-    target: 'node',
-    watch: false,
-    entry: {
-      [`${distPath}/index`]: './src/index',
-    },
-    plugins: [
-      new CopyPlugin({
-        patterns: [
-          {
-            from: 'node_modules/better-sqlite3/build',
-            to: `${distPath}/../../build`,
-          },
-          {
-            from: 'dist/ip-index.db',
-            to: `${distPath}/dist`,
-          },
-        ],
-      }),
-      new ZipPlugin({
-        filename: `${libName}-layer.zip`,
-      }),
-    ],
-    optimization: {
-      minimize: false,
-    },
-    output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, 'dist'),
-      libraryTarget: 'commonjs2',
-    },
-  },
 ];
