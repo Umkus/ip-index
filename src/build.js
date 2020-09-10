@@ -181,4 +181,4 @@ async function main() {
   fs.writeFileSync(`${distPath}/datacenters.netset`, dcAsns.map((item) => item.cidr).sort().join('\n'));
 }
 
-main();
+main().catch(console.log);
