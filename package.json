@@ -6,6 +6,7 @@
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
   "main": "src/index.js",
   "scripts": {
+    "postinstall": "gunzip -d dist/ip-index.db.gz",
     "deps:install": "npm install",
     "deps:update": "npm update && npm audit fix -f",
     "db:build": "node src/build.js",
@@ -15,6 +16,7 @@
     "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-index --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
   },
   "devDependencies": {
+    "gunzip": "^1.2.2",
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "aws-sdk": "2.631.0",
