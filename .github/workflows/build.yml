@@ -50,9 +50,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push changes and the new tag
         run: git push --follow-tags
-      - name: Building lambda
-        run: npm run app:build
-      - name: Building CloudFormation template
-        run: npm run cf:build
-      - name: Deploying
-        run: npm run cf:deploy
+      #- name: Building lambda
+      #  run: npm run app:build
+      #- name: Building CloudFormation template
+      #  run: npm run cf:build
+      #- name: Deploying
+      #  run: npm run cf:deploy
