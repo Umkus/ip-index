@@ -1,6 +1,6 @@
 {
   "name": "ip-index",
-  "version": "0.0.150",
+  "version": "0.0.151",
   "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
   "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
