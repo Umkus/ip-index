@@ -54,6 +54,7 @@ const insertBlacklisted = db.prepare('INSERT OR IGNORE INTO blacklisted VALUES (
 const insertDatacenter = db.prepare('INSERT OR IGNORE INTO datacenters VALUES (?,?,?)');
 const insertCountry = db.prepare('INSERT OR IGNORE INTO countries VALUES (?,?,?,?)');
 const insertAsn = db.prepare('INSERT OR IGNORE INTO asns VALUES (?,?,?,?, ?)');
+const selectAsns = db.prepare('SELECT * FROM asns WHERE start = ? AND ? between first AND last LIMIT 1');
 
 async function getZip(url, dest) {
   console.log(`Downloading ${dest}...`);
@@ -176,6 +177,35 @@ async function main() {
     return false;
   });
   db.exec('COMMIT;');
+
+  console.log('Fetching Nord VPN IPs...');
+
+  const nordIps = await axios({
+    method: 'GET',
+    url: 'https://api.nordvpn.com/server',
+  })
+    .then(({ data }) => data.map((i) => i.ip_address))
+    .catch((e) => {
+      console.log(e);
+      return [];
+    });
+
+  console.log('Got', nordIps.length, 'IPs');
+
+  nordIps.forEach((ip) => {
+    const start = +ip.split('.')[0];
+    const ipInt = ip2int(ip);
+    const asn = selectAsns.raw().get(start, ipInt);
+
+    if (!asn) {
+      return;
+    }
+
+    dcAsns.push({
+      first: asn.first,
+      last: asn.last,
+    });
+  });
 
   db.exec('BEGIN TRANSACTION;');
   dcAsns.forEach((item) => {

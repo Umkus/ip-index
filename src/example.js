@@ -3,7 +3,7 @@
 const IpIndex = require('./index');
 
 console.time('init');
-const ipIndex = new IpIndex('../dist/ip-index.db');
+const ipIndex = new IpIndex(`${__dirname}/../dist/ip-index.db`);
 console.timeEnd('init');
 
 const ip = '93.201.96.204';
