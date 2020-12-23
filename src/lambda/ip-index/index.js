@@ -1,5 +1,4 @@
 const IpIndex = require('../../index');
-const eu = require('./eu.json');
 
 const ipIndex = new IpIndex('./ip-index.db');
 
@@ -10,7 +9,7 @@ async function handler(event) {
     const country = ipIndex.getCountry(item);
     const isBlacklisted = ipIndex.isBlacklisted(item);
     const isDatacenter = ipIndex.isDatacenter(item);
-    const isEu = eu.includes(country);
+    const isEu = ipIndex.isEU(item);
     const asn = ipIndex.getAsn(item);
 
     return {

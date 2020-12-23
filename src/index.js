@@ -1,4 +1,5 @@
 const sqlite3 = require('better-sqlite3');
+const eu = require('./eu.json');
 
 function ip2int(ip) {
   return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
@@ -37,6 +38,10 @@ class IpIndex {
     const ipInt = ip2int(ip);
 
     return this.selectCountries.pluck().get(start, ipInt);
+  }
+
+  isEU(ip) {
+    return eu.includes(this.getCountry(ip));
   }
 
   getAsn(ip) {

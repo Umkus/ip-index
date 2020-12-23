@@ -12,5 +12,6 @@ console.time('queries');
 console.log('Datacenter:', ipIndex.isDatacenter(ip));
 console.log('Blacklisted:', ipIndex.isBlacklisted(ip));
 console.log('Country:', ipIndex.getCountry(ip));
+console.log('Is EU:', ipIndex.isEU(ip));
 console.log('Asn:', ipIndex.getAsn(ip));
 console.timeEnd('queries');
