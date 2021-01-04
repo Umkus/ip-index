@@ -18,6 +18,7 @@ const bad = [
 const good = [
   /(\W|^)mobile/i,
   /(\W|^)tv(\W|$)/i,
+  /afrihost/i,
   /broad/i,
   /vcable/i,
   /fiber/i,
