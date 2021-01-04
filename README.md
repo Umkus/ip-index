@@ -88,6 +88,7 @@ The `TOKEN` for the underlying ASN database could be issued with your free [ip2l
 * [This list of DC names](https://udger.com/resources/datacenter-list)
 * [This list of ASNs](https://github.com/brianhama/bad-asn-list)
 * [This list of web-hosting companies](https://github.com/linuxclark/web-hosting-companies)
+* [NordVPN API](https://api.nordvpn.com/servers)
 
 ## Acknowledgments
 
