@@ -7,6 +7,25 @@ Project contains:
 * An [SQLite3 database](/dist/ip-index.db.gz) containing IP ranges of datacenters, IPs used for malicious activities, ASNs and countries
 * Same plain-text files are available under [/dist](/dist) folder.
 
+## Why this exists
+
+Existing solutions to detect VPNs/Proxies revolve around providing HTTP APIs or binary databases on a subscription model.
+Downsides of the existing projects are:
+* Extremely expensive
+* Not portable
+* Not fast enough
+
+This database is:
+* Free
+* Portable (SQLite3)
+* Sufficiently fast
+
+## What's missing?
+Some ISPs/Telecoms, while not being exactly hosting providers, might still provide mobile VPN services on specific IP addresses, which is not easy to detect.
+These are often covered in paid solutions.
+
+Using black-listed IPs lists together with datacenter IP lists covers some of the bases, as those IPs are often used for malicious purposes and end up blacklisted eventually. 
+
 ## How are/were the datacenter ranges detected
 
 * The ASNs (manually) deducted from [this list](https://udger.com/resources/datacenter-list) of Datacenters
