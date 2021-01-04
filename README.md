@@ -43,29 +43,43 @@ Check against any of the known IP scoring services:
 
 ## Usage
 
-Install dependencies and generate a DB
-
-```shell script
-npm run deps:install
-TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} npm run db:build
-```
+The project is provided with an example NodeJS [library](src/index.js) to query the database, but you are not limited to the programming language, since SQLite database is highly portable.
 
 Run the [example file](src/example.js):
 
 ```shell script
-node ./src/example.js`
+node ./src/example.js
 ```
 
 Output:
 
 ```
-init: 1.074ms
+init: 46.245ms
 Datacenter: false
 Blacklisted: true
 Country: de
+Is EU: true
 Asn: { id: 3320, name: 'Deutsche Telekom AG' }
-queries: 3.759ms
+queries: 21.886ms
 ```
+
+## Building
+
+In case you really want to build the project yourself, you would need a NodeJS/NPM environment.
+
+Install dependencies:
+
+```shell script
+npm run deps:install
+```
+
+Start the build process, which would take up to a minute to complete.
+
+```shell script
+TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} npm run db:build
+```
+
+The `TOKEN` for the underlying ASN database could be issued with your free [ip2location](http://www.ip2location.com) account.
 
 ## Used projects
 
