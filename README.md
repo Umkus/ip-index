@@ -1,13 +1,31 @@
 # IP Index
-A fast offline IP lookup library. Returns blacklist status, detects VPN/hosting and shows geo info.
+
+An offline IP lookup database of VPN CIDRs and bad actor IP ranges. Updated daily.
+
+Project contains:
+
+* An [SQLite3 database](/dist/ip-index.db.gz) containing IP ranges of datacenters, IPs used for malicious activities, ASNs and countries
+* Same plain-text files are available under [/dist](/dist) folder.
 
 ## How are/were the datacenter ranges detected
 
-* [This list](https://udger.com/resources/datacenter-list) of Datacenters was manually converted to a list of ASNs.
-* The ASNs from [these](https://github.com/linuxclark/web-hosting-companies) [lists](https://github.com/brianhama/bad-asn-list) were added.
+* The ASNs (manually) deducted from [this list](https://udger.com/resources/datacenter-list) of Datacenters
+* The ASNs from [these](https://github.com/linuxclark/web-hosting-companies) [lists](https://github.com/brianhama/bad-asn-list) were added
+* The ASNs deducted (automatically, during build) from NordVPN's [server list](https://api.nordvpn.com/server) IPs
 * List of all ASNs names is [matched](src/matches.js) against keywords that would give away datacenters or hosting
 
 False positives are possible.
+
+## Items in database
+
+Below is the approximate number of rows in each of the database tables. Each row contains IP or IP range in an integer notation (first and last IPs).
+
+|*Table*|*Items*|*Info*|
+|---|:---:|---|
+|datacenters|~138k|IP ranges|
+|blacklisted|~1.9M|mostly IPs, with occasional IP ranges|
+|asns|~1.1M|ANSs with related IP ranges|
+|countries|268k|IP ranges|
 
 ## Sanity check
 
@@ -18,6 +36,7 @@ sort -R dist/datacenters.netset | head -n 5
 ```
 
 Check against any of the known IP scoring services:
+
 * https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
 * https://www.ip2location.com/demo/1.1.1.1
 * https://scamalytics.com/ip/1.1.1.1
@@ -25,6 +44,7 @@ Check against any of the known IP scoring services:
 ## Usage
 
 Install dependencies and generate a DB
+
 ```shell script
 npm run deps:install
 TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} npm run db:build
@@ -37,6 +57,7 @@ node ./src/example.js`
 ```
 
 Output:
+
 ```
 init: 1.074ms
 Datacenter: false
@@ -55,5 +76,6 @@ queries: 3.759ms
 * [This list of web-hosting companies](https://github.com/linuxclark/web-hosting-companies)
 
 ## Acknowledgments
+
 * This product includes IP2Location LITE data available from [http://www.ip2location.com](http://www.ip2location.com).
 * This product includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).
