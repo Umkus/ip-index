@@ -19,7 +19,7 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "aws-sdk": "2.631.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.2.2",
     "babel-preset-latest-node": "^4.1.0",
@@ -31,7 +31,7 @@
     "eslint-plugin-node": "^11.0.0",
     "extract-zip": "^2.0.1",
     "ignore-assets-webpack-plugin": "^2.0.1",
-    "webpack": "^4.44.2",
+    "webpack": "^4.45.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.11",
     "zip-webpack-plugin": "^3.0.0"
