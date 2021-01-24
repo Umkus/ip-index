@@ -27,6 +27,7 @@ const good = [
   /isp/i,
   /tele/i,
   /tele?com/i,
+  /Echostar/i,
 ];
 
 const asns = [
