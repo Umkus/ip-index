@@ -27,8 +27,6 @@ jobs:
       #    aws-region: eu-central-1
       - name: Installing deps
         run: npm run deps:install
-      - name: Linting code
-        run: npm run app:lint
       - name: Building lists
         run: npm run db:build
         env:
