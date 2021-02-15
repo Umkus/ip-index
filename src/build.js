@@ -201,8 +201,6 @@ async function main() {
       return;
     }
 
-    console.log(ip, asn.id, asn.name);
-
     dcAsns.push({
       first: asn.first,
       last: asn.last,
