@@ -195,7 +195,7 @@ async function main() {
   nordIps.forEach((ip) => {
     const start = +ip.split('.')[0];
     const ipInt = ip2int(ip);
-    const asn = selectAsns.raw().get(start, ipInt);
+    const asn = selectAsns.get(start, ipInt);
 
     if (!asn) {
       return;
