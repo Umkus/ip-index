@@ -41,7 +41,7 @@ Below is the approximate number of rows in each of the database tables. Each row
 
 |*Table*|*Items*|*Info*|
 |---|:---:|---|
-|datacenters|~138k|IP ranges|
+|datacenters|~127k|IP ranges|
 |blacklisted|~1.9M|mostly IPs, with occasional IP ranges|
 |asns|~1.1M|ANSs with related IP ranges|
 |countries|268k|IP ranges|
