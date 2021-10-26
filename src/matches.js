@@ -30,6 +30,7 @@ const good = [
   /echostar/i,
   /vodafone/i,
   /clouditalia/i,
+  /servihosting/i,
 ];
 
 const asns = [
