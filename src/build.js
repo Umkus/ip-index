@@ -162,12 +162,12 @@ async function main() {
       // return true;
     }
 
-    if (matches.good.find((goodPattern) => goodPattern.test(item.name))) {
-      return false;
-    }
-
     if (matches.asns.includes(+item.id)) {
       return true;
+    }
+
+    if (matches.good.find((goodPattern) => goodPattern.test(item.name))) {
+      return false;
     }
 
     if (matches.bad.find((badPattern) => badPattern.test(item.name))) {
