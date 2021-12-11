@@ -1,0 +1,11 @@
+.idea
+*.iml
+data/sets/
+data/IP2LOCATION-LITE-ASN.CSV
+dist/*
+!dist/*.netset
+!dist/countries.csv
+!dist/*.gz
+mysq/
+node_modules/
+src/review.js

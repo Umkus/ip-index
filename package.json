@@ -1,0 +1,43 @@
+{
+  "name": "ip-index",
+  "version": "0.0.563",
+  "repository": "https://github.com/Umkus/ip-index.git",
+  "license": "UNLICENCED",
+  "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
+  "main": "src/index.js",
+  "scripts": {
+    "postinstall": "gunzip -f < dist/ip-index.db.gz > dist/ip-index.db || true",
+    "deps:install": "npm install",
+    "deps:update": "npm update && npm audit fix -f",
+    "db:build": "node src/build.js",
+    "app:lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "app:build": "node ./node_modules/webpack/bin/webpack.js --env.NODE_ENV=production",
+    "cf:build": "aws cloudformation package --s3-bucket unsee-artifacts --template-file cloudformation/application.yaml --output-template-file dist/application.yaml",
+    "cf:deploy": "aws cloudformation deploy --no-fail-on-empty-changeset --stack-name ip-index --template-file dist/application.yaml --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "aws-sdk": "2.631.0",
+    "axios": "^0.21.1",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.2.2",
+    "babel-preset-latest-node": "^4.1.0",
+    "copy-webpack-plugin": "^6.4.1",
+    "csv-parse": "^4.15.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.0.0",
+    "extract-zip": "^2.0.1",
+    "ignore-assets-webpack-plugin": "^2.0.1",
+    "webpack": "^4.46.0",
+    "webpack-cleanup-plugin": "^0.5.1",
+    "webpack-cli": "^3.3.11",
+    "zip-webpack-plugin": "^3.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^7.1.4"
+  },
+  "author": "Michael Gorianskyi"
+}

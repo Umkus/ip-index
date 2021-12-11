@@ -1,0 +1,56 @@
+name: Build blocklists
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: oleksiyrudenko/gha-git-credentials@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      #- name: Configure AWS Credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #    aws-region: eu-central-1
+      - name: Installing deps
+        run: npm run deps:install
+      - name: Building lists
+        run: npm run db:build
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+      - name: Gzipping db file
+        run: gzip < dist/ip-index.db > dist/ip-index.db.gz
+      - name: Listing dist files
+        run: ls -lsah dist/
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: .
+          message: Updated blocklists
+      - name: New version and tag
+        run: npm version patch
+      - name: Publish new NPM package version
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes and the new tag
+        run: git push --follow-tags
+      #- name: Building lambda
+      #  run: npm run app:build
+      #- name: Building CloudFormation template
+      #  run: npm run cf:build
+      #- name: Deploying
+      #  run: npm run cf:deploy
