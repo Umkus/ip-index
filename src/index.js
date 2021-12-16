@@ -1,66 +1,84 @@
-const sqlite3 = require('better-sqlite3');
-const eu = require('./eu.json');
+const { readFileSync } = require('fs');
 
-function ip2int(ip) {
+const eu = [
+  'at',
+  'be',
+  'bg',
+  'hr',
+  'cy',
+  'cz',
+  'dk',
+  'ee',
+  'fi',
+  'fr',
+  'de',
+  'gr',
+  'hu',
+  'ie',
+  'it',
+  'lv',
+  'lt',
+  'lu',
+  'mt',
+  'nl',
+  'pl',
+  'pt',
+  'ro',
+  'sk',
+  'si',
+  'es',
+  'se',
+  'gb',
+  'gf',
+  'gp',
+  'mq',
+  'me',
+  'yt',
+  're',
+  'mf',
+];
+
+const ranges = readFileSync('../dist/ip2asn.tsv').toString().split(/\n/).map((item) => {
+  const fields = item.split(/\t/);
+  return {
+    start: +fields[0],
+    end: +fields[1],
+    first: intToIp(+fields[0]),
+    last: intToIp(+fields[1]),
+    asn: +fields[2],
+    country: fields[3],
+    name: fields[4],
+    datacenter: !!+fields[5],
+    eu: eu.includes(fields[3] ? fields[3].toLowerCase() : null)
+  };
+});
+
+function intToIp(int) {
+  const part1 = int & 255;
+  const part2 = ((int >> 8) & 255);
+  const part3 = ((int >> 16) & 255);
+  const part4 = ((int >> 24) & 255);
+
+  return `${part4}.${part3}.${part2}.${part1}`;
+}
+
+function ipToInt(ip) {
   return ip.split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
 }
 
-class IpIndex {
-  constructor(dbFile = '../dist/ip-index.db') {
-    const db = sqlite3(dbFile);
+function getIpInfo(ip) {
+  const ipInt = ipToInt(ip);
+  const asn = ranges.find((range) => range.start <= ipInt && range.end >= ipInt);
 
-    db.pragma('journal_mode = memory;');
-    db.pragma('synchronous = off;');
-    db.pragma('automatic_index = off;');
+  delete asn.start;
+  delete asn.end;
 
-    this.selectBlacklists = db.prepare('SELECT 1 FROM blacklisted WHERE start = ? AND ? between first AND last LIMIT 1');
-    this.selectDatacenters = db.prepare('SELECT * FROM datacenters WHERE start = ? AND ? between first AND last LIMIT 1');
-    this.selectAsns = db.prepare('SELECT * FROM asns WHERE start = ? AND ? between first AND last LIMIT 1');
-    this.selectCountries = db.prepare('SELECT country FROM countries WHERE start = ? AND ? between first AND last LIMIT 1');
-  }
+  asn.country = asn.country.toLowerCase();
 
-  isBlacklisted(ip) {
-    const start = +ip.split('.')[0];
-    const ipInt = ip2int(ip);
-
-    return !!this.selectBlacklists.pluck().get(start, ipInt);
-  }
-
-  isDatacenter(ip) {
-    const start = +ip.split('.')[0];
-    const ipInt = ip2int(ip);
-
-    return !!this.selectDatacenters.pluck().get(start, ipInt);
-  }
-
-  getCountry(ip) {
-    const start = +ip.split('.')[0];
-    const ipInt = ip2int(ip);
-
-    return this.selectCountries.pluck().get(start, ipInt);
-  }
-
-  isEU(ip) {
-    return eu.includes(this.getCountry(ip));
-  }
-
-  getAsn(ip) {
-    const start = +ip.split('.')[0];
-    const ipInt = ip2int(ip);
-
-    const data = this.selectAsns.raw().get(start, ipInt);
-
-    if (!data) {
-      return null;
-    }
-
-    const [id, name] = data.slice(3);
-
-    return {
-      id,
-      name,
-    };
-  }
+  return asn;
 }
 
-module.exports = IpIndex;
+module.exports = {
+  getIpInfo,
+};
+
