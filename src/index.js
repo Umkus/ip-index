@@ -68,7 +68,10 @@ function ipToInt(ip) {
 
 function getIpInfo(ip) {
   const ipInt = ipToInt(ip);
-  const asn = ranges.find((range) => range.start <= ipInt && range.end >= ipInt);
+  let asn = ranges
+    .filter((range) => range.start <= ipInt && range.end >= ipInt)
+    .sort((a, b) => a.end - a.start >= b.end - b.start ? 1 : -1)
+    .shift();
 
   delete asn.start;
   delete asn.end;
