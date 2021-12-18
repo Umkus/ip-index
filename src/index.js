@@ -73,12 +73,17 @@ function getIpInfo(ip) {
     .sort((a, b) => a.end - a.start >= b.end - b.start ? 1 : -1)
     .shift();
 
-  delete asn.start;
-  delete asn.end;
+  if (!asn) {
+    return null;
+  }
 
   asn.country = asn.country.toLowerCase();
 
-  return asn;
+  const res = { ...asn };
+  delete res.start;
+  delete res.end;
+
+  return res;
 }
 
 module.exports = {
