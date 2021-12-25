@@ -1,6 +1,6 @@
 const { getIpInfo } = require('./index');
-const ip = '45.41.132.207';
+const ip = '199.103.22.0';
 
 console.time('time');
-console.log(getIpInfo(ip));
+console.log(ip, getIpInfo(ip));
 console.timeEnd('time');

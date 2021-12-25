@@ -17,6 +17,8 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ip-cidr": "^3.0.4"
+  },
   "author": "Michael Gorianskyi"
 }
