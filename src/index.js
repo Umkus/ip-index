@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const asns = {};
 
@@ -21,56 +21,55 @@ readFileSync('../data/asns_dcs.csv').toString().split(/\n/)
     dcAsns[asn] = true;
   });
 
-const ranges = readFileSync('../data/asns_cidrs.csv').toString()
+const rangesIndexed = {};
+
+readFileSync('../data/asns_cidrs.csv').toString()
   .split(/\n/)
   .filter((i) => i)
-  .map((item, index) => {
+  .forEach((item, index) => {
     if (!index) {
       return null;
     }
 
     const [asn, cidr, first, last] = item.split(',');
 
-    return {
+    const rangeIndex = +cidr.split('.')[0];
+
+    if (!rangesIndexed[rangeIndex]) {
+      rangesIndexed[rangeIndex] = [];
+    }
+
+    const range = {
       start: +first,
       end: +last,
-      cidr,
+      subnet: cidr,
       asn: +asn,
-      name: (asns[asn] || {}).description || 'N/A',
-      handle: (asns[asn] || {}).handle || 'N/A',
-      datacenter: !!dcAsns[asn],
+      hosting: !!dcAsns[asn],
     };
+
+    if (asns[asn]) {
+      asns[asn].subnetsNum = asns[asn].subnetsNum || 0;
+      asns[asn].subnets = asns[asn].subnets || [];
+      asns[asn].subnets.push(cidr);
+      asns[asn].subnetsNum = asns[asn].subnets.length;
+    }
+
+    rangesIndexed[rangeIndex].push(range);
   });
 
 function ipToInt(ip) {
   return ip.trim().split('.').reduce((int, oct) => (int << 8) + parseInt(oct, 10), 0) >>> 0;
 }
 
-function getIpInfo(ip) {
-  const ips = ip.split(',');
-  const ipsInt = ips.map(ipToInt);
-  const matches = [];
+export function getIpInfo(ip) {
+  const ipIndex = ip.split(/[.:]/)[0];
+  const ipInt = ipToInt(ip);
 
-  ranges.forEach((range) => {
-    if (!range) {
-      return false;
-    }
+  if (!rangesIndexed[ipIndex]) {
+    return [];
+  }
 
-    for (let index in ipsInt) {
-      if (+range.start <= ipsInt[index] && +range.end >= ipsInt[index]) {
-        const res = { ip: ips[index], ...range };
-        delete res.start;
-        delete res.end;
-
-        matches.push(res);
-      }
-    }
-  });
-
-  return matches;
+  return rangesIndexed[ipIndex]
+    .filter((range) => range && +range.start <= ipInt && +range.end >= ipInt)
+    .map((match) => ({ ...match, ...asns[match.asn] }));
 }
-
-module.exports = {
-  getIpInfo,
-};
-

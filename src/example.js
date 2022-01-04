@@ -1,6 +1,8 @@
-const { getIpInfo } = require('./index');
-const ip = '199.103.22.0,1.1.1.1';
+import { getIpInfo } from './index.js';
+
+const ip = '8.8.8.8';
 
 console.time('time');
-console.log(getIpInfo(ip));
+const ipInfo = getIpInfo(ip);
+console.log(ipInfo);
 console.timeEnd('time');
