@@ -1,5 +1,5 @@
-const fs = require('fs');
-const axios = require('axios');
+import fs from 'fs';
+import axios from 'axios';
 
 const patternsBad = [
   /(^|\W)vps(\W|$)/i,
@@ -39,7 +39,7 @@ const patternsGood = [
 const ip2asnUrl = 'https://github.com/Umkus/ip2asn-mirror/releases/download/ip2asn/ip2asn.tsv';
 const nordUrl = 'https://github.com/Umkus/nordvpn-ips/releases/download/ips/ips.csv';
 
-const fileDcAsns = `../data/dc_asns.tsv`;
+const fileDcAsns = `../data/asns_dcs.csv`;
 const fileIp2Asn = `../dist/ip2asn.tsv`;
 const fileDcRanges = `../dist/dc_ranges.csv`;
 const fileNordIps = `../dist/nord.csv`;
@@ -65,13 +65,12 @@ async function start() {
   let nordIps = fs.readFileSync(fileNordIps).toString().split(/\s+/).map(ipToInt).sort();
 
   const dcs = fs.readFileSync(fileDcAsns).toString().split(/\s+/);
-  const enriched = fs.readFileSync(fileIp2Asn).toString()
+  fs.readFileSync(fileIp2Asn).toString()
     .split(/\n/)
-    .map((row) => {
+    .forEach((row) => {
       const fields = row.split(/\t/);
       const isBad = patternsBad.find((pattern) => pattern.test(fields[4])) || false;
       const isGood = patternsGood.find((pattern) => pattern.test(fields[4])) || false;
-
       let isNord = false;
 
       while (+nordIps[0] < +fields[0]) {
@@ -83,18 +82,13 @@ async function start() {
         isNord = true;
       }
 
-      const isTarget = dcs.includes(fields[2]) || (isBad && !isGood) || isNord;
-      fields[5] = +isTarget;
+      const isDataCenter = dcs.includes(fields[2]) || (isBad && !isGood) || isNord;
 
-      if (isTarget) {
+      if (isDataCenter) {
         dcRanges.push(`${+fields[0]},${+fields[1]},${fields[2]}`);
       }
+    });
 
-      return fields.join('\t');
-    })
-    .join('\n');
-
-  fs.writeFileSync(fileIp2Asn, enriched);
   fs.writeFileSync(fileDcRanges, dcRanges.join('\n'));
 }
 
