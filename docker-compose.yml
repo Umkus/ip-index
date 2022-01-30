@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  node:
+    container_name: node
+    entrypoint: node
+    command: src/server.js
+    image: ghcr.io/umkus/ipindex-node:latest
+
+  nginx:
+    container_name: nginx
+    depends_on:
+      - node
+    image: ghcr.io/umkus/ipindex-nginx:latest
+    entrypoint: nginx
+    ports:
+      - 80:80

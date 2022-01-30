@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  node:
+    build:
+      dockerfile: node.Dockerfile
+      context: .
+    volumes:
+      - .:/var/www
+
+  nginx:
+    build:
+      dockerfile: nginx.Dockerfile
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf

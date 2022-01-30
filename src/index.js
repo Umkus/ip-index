@@ -1,8 +1,12 @@
 import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const asns = {};
 
-readFileSync('../data/asns.csv').toString().split(/\n/).forEach((item, index) => {
+readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\n/).forEach((item, index) => {
   if (!index) {
     return undefined;
   }
@@ -16,14 +20,14 @@ readFileSync('../data/asns.csv').toString().split(/\n/).forEach((item, index) =>
 });
 
 const dcAsns = {};
-readFileSync('../data/asns_dcs.csv').toString().split(/\n/)
+readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\n/)
   .forEach((asn) => {
     dcAsns[asn] = true;
   });
 
 const rangesIndexed = {};
 
-readFileSync('../data/asns_cidrs.csv').toString()
+readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString()
   .split(/\n/)
   .filter((i) => i)
   .forEach((item, index) => {
@@ -48,10 +52,7 @@ readFileSync('../data/asns_cidrs.csv').toString()
     };
 
     if (asns[asn]) {
-      asns[asn].subnetsNum = asns[asn].subnetsNum || 0;
-      asns[asn].subnets = asns[asn].subnets || [];
-      asns[asn].subnets.push(cidr);
-      asns[asn].subnetsNum = asns[asn].subnets.length;
+      asns[asn].subnetsNum = (asns[asn].subnetsNum || 0) + 1;
     }
 
     rangesIndexed[rangeIndex].push(range);

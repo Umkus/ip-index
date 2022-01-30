@@ -4,22 +4,19 @@
   "version": "1.0.0",
   "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
-  "description": "IP blocklists containing IPs of known bad actors and ranges likely belonging to data centers",
+  "description": "Block-list containing IPs belonging to hosting data centers",
   "main": "src/index.js",
   "scripts": {
     "deps:install": "npm install",
-    "deps:update": "npm update && npm audit fix -f",
-    "db:build": "node bin/build.js"
+    "deps:update": "npm update && npm audit fix -f"
   },
   "devDependencies": {
-    "axios": "^0.24.0",
-    "eslint": "^8.4.1",
-    "eslint-config-airbnb": "^19.0.2",
-    "eslint-plugin-import": "^2.25.3",
+    "axios": "^0.25.0",
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0"
   },
-  "dependencies": {
-    "ip-cidr": "^3.0.4"
-  },
+  "dependencies": {},
   "author": "Michael Gorianskyi"
 }
