@@ -1,70 +1,40 @@
 # IP Index
 
-An offline IP lookup database of VPN CIDRs and bad actor IP ranges. Updated daily.
+An offline lookup database of IPs, belonging to hosting data-centers.
 
 Project contains:
 
-* An [SQLite3 database](/dist/ip-index.db.gz) containing IP ranges of datacenters, IPs used for malicious activities, ASNs and countries
-* Same plain-text files are available under [/dist](/dist) folder.
+* Data-center ASNs CSV list
+* NPM library
+* Dockerized webservice
 
 ## Why this exists
 
-Existing solutions to detect VPNs/Proxies revolve around providing HTTP APIs or binary databases on a subscription model.
+Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model.
 Downsides of the existing projects are:
-* Extremely expensive
+* Not cost-effective
 * Not portable
 * Not fast enough
 
-This database is:
+This solution is:
 * Free
-* Portable (SQLite3)
-* Sufficiently fast
-
-## What's missing?
-Some ISPs/Telecoms, while not being exactly hosting providers, might still provide mobile VPN services on specific IP addresses, which is not easy to detect.
-These are often covered in paid solutions.
-
-Using black-listed IPs lists together with datacenter IP lists covers some of the bases, as those IPs are often used for malicious purposes and end up blacklisted eventually. 
-
-## How are/were the datacenter ranges detected
-
-* The ASNs (manually) deducted from [this list](https://udger.com/resources/datacenter-list) of Datacenters
-* The ASNs from [these](https://github.com/linuxclark/web-hosting-companies) [lists](https://github.com/brianhama/bad-asn-list) were added
-* The ASNs deducted (automatically, during build) from NordVPN's [server list](https://api.nordvpn.com/server) IPs
-* List of all ASNs names is [matched](src/matches.js) against keywords that would give away datacenters or hosting
+* Portable (Docker)
+* Fast and efficient (caching reverse proxy)
 
 False positives are possible.
 
-## Items in database
-
-Below is the approximate number of rows in each of the database tables. Each row contains IP or IP range in an integer notation (first and last IPs).
-
-|*Table*|*Items*|*Info*|
-|---|:---:|---|
-|datacenters|~127k|IP ranges|
-|blacklisted|~1.9M|mostly IPs, with occasional IP ranges|
-|asns|~1.1M|ANSs with related IP ranges|
-|countries|268k|IP ranges|
-
-## Sanity check
-
-Pick some random IPs:
-
-```shell script
-sort -R dist/datacenters.netset | head -n 5
-```
-
-Check against any of the known IP scoring services:
-
+## Methods of validation
+One of the target ASN IPs is checked against one or more of the known IP scoring services:
 * https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
 * https://www.ip2location.com/demo/1.1.1.1
 * https://scamalytics.com/ip/1.1.1.1
 
-## Usage
+## Usage (node)
+```bash
+npm install ip-index
+```
 
-The project is provided with an example NodeJS [library](src/index.js) to query the database, but you are not limited to the programming language, since SQLite database is highly portable.
-
-Run the [example file](src/example.js):
+See the [example file](src/example.js):
 
 ```shell script
 node ./src/example.js
@@ -73,41 +43,38 @@ node ./src/example.js
 Output:
 
 ```
-init: 46.245ms
-Datacenter: false
-Blacklisted: true
-Country: de
-Is EU: true
-Asn: { id: 3320, name: 'Deutsche Telekom AG' }
-queries: 21.886ms
+[
+  {
+    start: 134217728,
+    end: 142606335,
+    subnet: '8.0.0.0/9',
+    asn: 3356,
+    hosting: false,
+    handle: 'LEVEL3',
+    description: 'Level 3 Parent',
+    subnetsNum: 527
+  },
+  {
+    start: 134744064,
+    end: 134744319,
+    subnet: '8.8.8.0/24',
+    asn: 15169,
+    hosting: true,
+    handle: 'GOOGLE',
+    description: 'Google LLC',
+    subnetsNum: 75
+  }
+]
+time: 7.22ms
 ```
 
-## Building
 
-In case you really want to build the project yourself, you would need a NodeJS/NPM environment.
-
-Install dependencies:
-
-```shell script
-npm run deps:install
+## Usage (web service)
+```bash
+docker-compose -f docker-compose.yml up -d
 ```
 
-Start the build process, which would take up to a minute to complete.
-
-```shell script
-TOKEN={IP2LOCATION_DOWNLOAD_TOKEN} npm run db:build
-```
-
-The `TOKEN` for the underlying ASN database could be issued with your free [ip2location](http://www.ip2location.com) account.
-
-## Used projects
-
-* [Firehol](https://github.com/firehol/blocklist-ipsets)
-* [ip2location ASN DB](https://lite.ip2location.com/database/ip-asn)
-* [This list of DC names](https://udger.com/resources/datacenter-list)
-* [This list of ASNs](https://github.com/brianhama/bad-asn-list)
-* [This list of web-hosting companies](https://github.com/linuxclark/web-hosting-companies)
-* [NordVPN API](https://api.nordvpn.com/servers)
+Now open this url in browser: `http://localhost/8.8.8.8`
 
 ## Acknowledgments
 
