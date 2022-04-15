@@ -5,5 +5,4 @@ ADD https://github.com/Umkus/asn-ip/releases/download/latest/ranges_ipv4.csv /va
 COPY src /var/www/src
 COPY package.json /var/www/
 WORKDIR /var/www
-ENTRYPOINT node
-CMD src/server.js
+ENTRYPOINT node src/server.js

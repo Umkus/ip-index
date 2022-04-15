@@ -10,13 +10,14 @@ Project contains:
 
 ## Why this exists
 
-Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model.
-Downsides of the existing projects are:
+Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model. Downsides of the existing projects are:
+
 * Not cost-effective
 * Not portable
 * Not fast enough
 
 This solution is:
+
 * Free
 * Portable (Docker)
 * Fast and efficient (caching reverse proxy)
@@ -24,53 +25,27 @@ This solution is:
 False positives are possible.
 
 ## Methods of validation
+
 One of the target ASN IPs is checked against one or more of the known IP scoring services:
+
 * https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
 * https://www.ip2location.com/demo/1.1.1.1
 * https://scamalytics.com/ip/1.1.1.1
 
-## Usage (node)
-```bash
-npm install ip-index
+## Usage
+
+For a quick and easy start and test and evaluation you can start the docker container directly:
+
+```shell
+docker run -d -it -p 80:4000 --name ipindex ghcr.io/umkus/ipindex-node:latest 
 ```
+Now open this url in browser: `http://localhost/?ip=8.8.8.8`
 
-See the [example file](src/example.js):
+For a more advanced usage with pre-configured nginx throttling and caching
 
-```shell script
-node ./src/example.js
-```
-
-Output:
-
-```
-[
-  {
-    start: 134217728,
-    end: 142606335,
-    subnet: '8.0.0.0/9',
-    asn: 3356,
-    hosting: false,
-    handle: 'LEVEL3',
-    description: 'Level 3 Parent',
-    subnetsNum: 527
-  },
-  {
-    start: 134744064,
-    end: 134744319,
-    subnet: '8.8.8.0/24',
-    asn: 15169,
-    hosting: true,
-    handle: 'GOOGLE',
-    description: 'Google LLC',
-    subnetsNum: 75
-  }
-]
-time: 7.22ms
-```
-
-
-## Usage (web service)
-```bash
+```shell
+git clone git@github.com:Umkus/ip-index.git
+cd ip-index
 docker-compose -f docker-compose.yml up -d
 ```
 
