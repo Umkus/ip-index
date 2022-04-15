@@ -1,11 +1,10 @@
 # IP Index
 
-An offline lookup database of IPs, belonging to hosting data-centers.
+A self-sufficient web-service providing info about an IP, particularly its ASN and whether it's a hosting DataCenter or not.
 
 Project contains:
 
 * Data-center ASNs CSV list
-* NPM library
 * Dockerized webservice
 
 ## Usage
@@ -13,8 +12,9 @@ Project contains:
 For a quick and easy start and test and evaluation you can start the docker container directly:
 
 ```shell
-docker run -d -it -p 80:4000 --name ipindex ghcr.io/umkus/ipindex-node:latest 
+docker run -d -it -p 80:4000 --rm --name ipindex ghcr.io/umkus/ipindex-node:latest 
 ```
+
 Now open this url in browser: `http://localhost/?ip=8.8.8.8`
 
 For a more advanced usage with pre-configured nginx throttling and caching
@@ -25,12 +25,39 @@ cd ip-index
 docker-compose -f docker-compose.yml up -d
 ```
 
-Now open this url in browser: `http://localhost/8.8.8.8`
+Now open this url in browser: [http://localhost/8.8.8.8](http://localhost/8.8.8.8)
+
+You will see the following data structure:
+
+```json
+[
+  {
+    "start": 134217728,
+    "end": 142606335,
+    "subnet": "8.0.0.0/9",
+    "asn": 3356,
+    "hosting": false,
+    "handle": "LEVEL3",
+    "description": "Level 3 Parent",
+    "subnetsNum": 531
+  },
+  {
+    "start": 134744064,
+    "end": 134744319,
+    "subnet": "8.8.8.0/24",
+    "asn": 15169,
+    "hosting": true,
+    "handle": "GOOGLE",
+    "description": "Google LLC",
+    "subnetsNum": 76
+  }
+]
+
+```
 
 ## Why this exists
 
-Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model.
-Downsides of the existing projects might be at least one of the following:
+Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model. Downsides of the existing projects might be at least one of the following:
 
 * Not cost-effective
 * Not portable
