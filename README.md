@@ -8,30 +8,6 @@ Project contains:
 * NPM library
 * Dockerized webservice
 
-## Why this exists
-
-Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model. Downsides of the existing projects are:
-
-* Not cost-effective
-* Not portable
-* Not fast enough
-
-This solution is:
-
-* Free
-* Portable (Docker)
-* Fast and efficient (caching reverse proxy)
-
-False positives are possible.
-
-## Methods of validation
-
-One of the target ASN IPs is checked against one or more of the known IP scoring services:
-
-* https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
-* https://www.ip2location.com/demo/1.1.1.1
-* https://scamalytics.com/ip/1.1.1.1
-
 ## Usage
 
 For a quick and easy start and test and evaluation you can start the docker container directly:
@@ -50,6 +26,31 @@ docker-compose -f docker-compose.yml up -d
 ```
 
 Now open this url in browser: `http://localhost/8.8.8.8`
+
+## Why this exists
+
+Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model.
+Downsides of the existing projects might be at least one of the following:
+
+* Not cost-effective
+* Not portable
+* Not fast enough
+
+This solution is:
+
+* Free
+* Portable (Docker image)
+* Fast and efficient (caching, throttling reverse proxy)
+
+False positives are possible.
+
+## Methods of validation
+
+One of the target ASN IPs is checked against one or more of the known IP scoring services:
+
+* https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/lookup/1.1.1.1
+* https://www.ip2location.com/demo/1.1.1.1
+* https://scamalytics.com/ip/1.1.1.1
 
 ## Acknowledgments
 
