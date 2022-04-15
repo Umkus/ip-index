@@ -4,11 +4,10 @@ services:
     build:
       dockerfile: node.Dockerfile
       context: .
-    volumes:
-      - .:/var/www
 
   nginx:
     build:
       dockerfile: nginx.Dockerfile
+      context: .
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
