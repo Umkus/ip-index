@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: oleksiyrudenko/gha-git-credentials@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -21,5 +27,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Installing deps
         run: npm run deps:install
-      - name: Building lists
-        run: npm run db:build
+      - name: Building images
+        run: |
+          docker compose build
+          docker compose push
