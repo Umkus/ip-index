@@ -7,25 +7,25 @@ Project contains:
 * Data-center ASNs CSV list
 * Dockerized webservice
 
+Updates daily.
+
 ## Usage
 
-For a quick and easy start and test and evaluation you can start the docker container directly:
+For a quick and easy start and evaluation you can start the docker container directly:
 
 ```shell
 docker run -d -it -p 80:4000 --rm --name ipindex ghcr.io/umkus/ipindex-node:latest 
 ```
 
-Now open this url in browser: `http://localhost/?ip=8.8.8.8`
-
-For a more advanced usage with pre-configured nginx throttling and caching
+For a more advanced usage with pre-configured nginx throttling and caching:
 
 ```shell
-git clone git@github.com:Umkus/ip-index.git
-cd ip-index
-docker-compose -f docker-compose.yml up -d
+# git clone git@github.com:Umkus/ip-index.git
+# cd ip-index
+docker compose -f docker-compose.yml up -d
 ```
 
-Now open this url in browser: [http://localhost/8.8.8.8](http://localhost/8.8.8.8)
+Now open this url in browser: [http://localhost/?ip=8.8.8.8](http://localhost/?ip=8.8.8.8)
 
 You will see the following data structure:
 
