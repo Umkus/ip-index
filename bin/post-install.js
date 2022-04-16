@@ -10,11 +10,7 @@ const fileCidrs = createWriteStream(`${__dirname}/../data/asns_cidrs.csv`);
 const opts = { responseType: 'blob' };
 
 axios.get('https://github.com/Umkus/asn-ip/releases/download/latest/as.csv', opts)
-  .then((res) => {
-    fileAsns.write(res.data);
-  });
+  .then((res) => fileAsns.write(res.data));
 
 axios.get('https://github.com/Umkus/asn-ip/releases/download/latest/ranges_ipv4.csv', opts)
-  .then((res) => {
-    fileCidrs.write(res.data);
-  });
+  .then((res) => fileCidrs.write(res.data));
