@@ -4,6 +4,8 @@ services:
     build:
       dockerfile: node.Dockerfile
       context: .
+    volumes:
+      - .:/var/www
 
   nginx:
     build:
