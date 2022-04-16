@@ -32,5 +32,6 @@ jobs:
           docker compose build
           docker compose push
       - uses: JS-DevTools/npm-publish@v1
+        name: Publishing to NPM
         with:
           token: ${{ secrets.NODE_AUTH_TOKEN }}
