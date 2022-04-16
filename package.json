@@ -8,13 +8,14 @@
   "main": "src/index.js",
   "scripts": {
     "deps:install": "npm install",
-    "deps:update": "npm update && npm audit fix -f"
+    "deps:update": "npm update && npm audit fix -f",
+    "postinstall": "node ./bin/post-install.js"
   },
   "devDependencies": {
-    "axios": "^0.25.0",
-    "eslint": "^8.8.0",
+    "axios": "^0.26.1",
+    "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0"
   },
   "dependencies": {},

@@ -6,6 +6,7 @@ Project contains:
 
 * Data-center ASNs CSV list
 * Dockerized webservice
+* NPM library
 
 Updates daily.
 
