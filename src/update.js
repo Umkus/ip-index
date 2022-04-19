@@ -58,7 +58,7 @@ const patternsGood = [
   /communic/i,
 ];
 
-const nordIps = readFileSync('../data/ips_nord.csv').toString().split(/\n/);
+const nordIps = readFileSync(`${__dirname}/../data/ips_nord.csv`).toString().split(/\n/);
 
 const badAsns = csvAsns.filter((item) => {
   for (let patBad of patternsBad) {
@@ -77,7 +77,7 @@ const badAsns = csvAsns.filter((item) => {
 });
 
 const newBad = badAsns.map((item) => +item[0]);
-const oldBad = new Set(readFileSync('../data/asns_dcs.csv').toString().split(/\n/).map((item) => +item));
+const oldBad = new Set(readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\n/).map((item) => +item));
 
 newBad.forEach((item) => {
   if (!oldBad.has(item)) {
@@ -94,4 +94,4 @@ nordIps.forEach((nordIp) => {
     });
 });
 
-writeFileSync('../data/asns_dcs.csv', [...oldBad].sort().join('\n') + '\n');
+writeFileSync(`${__dirname}/../data/asns_dcs.csv`, [...oldBad].sort().join('\n') + '\n');
