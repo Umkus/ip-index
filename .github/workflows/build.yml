@@ -35,3 +35,18 @@ jobs:
         name: Publishing to NPM
         with:
           token: ${{ secrets.NODE_AUTH_TOKEN }}
+      - name: Update ASNs
+        run: node ./src/update.js
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: .
+          message: Updated ASNs list
+      - name: New version and tag
+        run: npm version patch
+      - name: Publish new NPM package version
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes and the new tag
+        run: git push --follow-tags

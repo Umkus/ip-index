@@ -9,7 +9,7 @@
   "scripts": {
     "deps:install": "npm install",
     "deps:update": "npm update && npm audit fix -f",
-    "postinstall": "node ./bin/post-install.js"
+    "postinstall": "node ./src/post-install.js"
   },
   "devDependencies": {
     "axios": "^0.26.1",
