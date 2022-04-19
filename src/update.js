@@ -3,8 +3,13 @@ import {
   writeFileSync,
 } from 'fs';
 import { getIpInfo } from './index.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const csvAsns = readFileSync('../data/asns.csv').toString()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const csvAsns = readFileSync(`${__dirname}/../data/asns.csv`).toString()
   .split(/\n/)
   .filter((item) => item.trim().length)
   .map((row) => {
