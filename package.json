@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "ip-index",
-  "version": "1.1.2",
+  "version": "1.1.0",
   "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
   "description": "Block-list containing IPs belonging to hosting data centers",
@@ -14,10 +14,10 @@
   "devDependencies": {
     "axios": "^0.26.1",
     "eslint": "^8.13.0",
+    "@ip-location-db/asn-country": "^2.3.2022041118",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-node": "^11.1.0",
-    "@ip-location-db/asn-country": "^2.3.2022041118"
+    "eslint-plugin-node": "^11.1.0"
   },
   "dependencies": {},
   "author": "Mykhailo Gorianskyi"
