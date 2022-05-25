@@ -11,11 +11,12 @@ readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\n/).forEach((it
     return undefined;
   }
 
-  const [asn, handle, description] = item.split(',');
+  const [asn, handle, country, description] = item.split(',');
 
   asns[asn] = {
     handle,
     description: (description || '').trim().replace(/"/g, ''),
+    country,
   };
 });
 
