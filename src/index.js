@@ -16,7 +16,7 @@ readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\n/).forEach((it
   asns[asn] = {
     handle,
     description: (description || '').trim().replace(/"/g, ''),
-    country,
+    country: country === '-' ? null : country,
   };
 });
 
