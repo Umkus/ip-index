@@ -69,7 +69,5 @@ Promise.all(promises)
       })
       .join('\n');
 
-    console.log('Writing result', asnsWithCountries.substr(0, 200));
-
     writeFileSync(`${__dirname}/../data/asns.csv`, asnsWithCountries);
   });
