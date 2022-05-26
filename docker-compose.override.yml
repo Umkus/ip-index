@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  node:
+  ipindex-node:
     build:
       dockerfile: node.Dockerfile
       context: .
     volumes:
       - .:/var/www
 
-  nginx:
+  ipindex-nginx:
     build:
       dockerfile: nginx.Dockerfile
       context: .
