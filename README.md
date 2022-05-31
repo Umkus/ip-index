@@ -1,14 +1,14 @@
 # IP Index
 
-A self-sufficient web-service providing info about an IP, particularly its ASN and whether it's a hosting DataCenter or not.
+A self-sufficient web-service providing info about an IP, particularly its ASN, country of origin and whether it's a hosting or not.
 
 Project contains:
 
 * Data-center ASNs CSV list
-* Dockerized webservice
+* Dockerized webservice (nginx and nodejs)
 * NPM library
 
-Updates daily.
+Updates daily. False positives are possible, use at own risk.
 
 ## Usage
 
@@ -40,6 +40,7 @@ You will see the following data structure:
     "hosting": false,
     "handle": "LEVEL3",
     "description": "Level 3 Parent",
+    "country": "US",
     "subnetsNum": 531
   },
   {
@@ -50,6 +51,7 @@ You will see the following data structure:
     "hosting": true,
     "handle": "GOOGLE",
     "description": "Google LLC",
+    "country": "US",
     "subnetsNum": 76
   }
 ]
@@ -70,7 +72,6 @@ This solution is:
 * Portable (Docker image)
 * Fast and efficient (caching, throttling reverse proxy)
 
-False positives are possible.
 
 ## Methods of validation
 
