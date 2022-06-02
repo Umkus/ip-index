@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const asns = {};
 
-readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\n/).forEach((item, index) => {
+readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\s+/).forEach((item, index) => {
   if (!index) {
     return undefined;
   }
@@ -21,7 +21,7 @@ readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\n/).forEach((it
 });
 
 const dcAsns = {};
-readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\n/)
+readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\s+/)
   .forEach((asn) => {
     dcAsns[asn] = true;
   });
@@ -29,7 +29,7 @@ readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\n/)
 const rangesIndexed = {};
 
 readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString()
-  .split(/\n/)
+  .split(/\s+/)
   .filter((i) => i)
   .forEach((item, index) => {
     if (!index) {
