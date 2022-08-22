@@ -13,7 +13,7 @@ const opts = { responseType: 'blob' };
 console.log('Building data files, please wait...');
 
 const promises = [
-  axios.get('https://github.com/Umkus/asn-ip/releases/download/latest/as.csv', opts).then((res) => writeFileSync(fileAsns, res.data)),
+  axios.get('https://github.com/ipverse/asn-info/raw/master/as.csv', opts).then((res) => writeFileSync(fileAsns, res.data)),
   axios.get('https://github.com/Umkus/asn-ip/releases/download/latest/ranges_ipv4.csv', opts).then((res) => writeFileSync(fileCidrs, res.data)),
   axios.get('https://github.com/Umkus/nordvpn-ips/releases/download/ips/ips.csv', opts).then((res) => writeFileSync(fileNord, res.data)),
 ];
