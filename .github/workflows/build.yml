@@ -1,6 +1,4 @@
 name: Build blocklists
-runs:
-  using: 'node16'
 on:
   workflow_dispatch: {}
   push:
