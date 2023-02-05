@@ -28,46 +28,37 @@ const countries = readFileSync(`${__dirname}/../node_modules/@ip-location-db/asn
     return item;
   });
 
-const asnToCountry = [];
-
 Promise.all(promises)
   .then(() => {
-    readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString().split('\n').slice(0)
-      .forEach((row) => {
+    console.log('Downloaded all files, enriching countries...')
+    const cidrsWithCountries = readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString()
+      .split('\n')
+      .slice(1)
+      .map((row, index) => {
         const items = row.split(',');
         const asn = +items[0];
-
-        if (asnToCountry[asn] !== undefined || isNaN(asn)) {
-          return false;
-        }
-
         const start = +items[2];
         const end = +items[3];
-        let country = '';
+        let country = '-'
 
-        const foundCountry = countries.find((country) => start >= country[0] && end <= country[1]);
+        index % 10000 === 0 && console.log('ASN', index, asn)
 
-        if (foundCountry) {
-          country = foundCountry[2];
+        try {
+          const foundCountry = countries.find((country) => start >= country[0] && end <= country[1]);
+
+          if (foundCountry) {
+            country = foundCountry[2];
+          } else {
+            // console.log('No country', row)
+          }
+        } catch(e) {
+          console.log(e)
         }
 
-        asnToCountry[asn] = country;
-      });
+        return `${row},${country}`;
+      }).join('\n');
 
-    const asnsWithCountries = readFileSync(`${__dirname}/../data/asns.csv`).toString().split('\n').slice(1)
-      .map((row) => {
-        if (row.length <= 2) {
-          return row;
-        }
-
-        const item = row.split(',');
-        const country = asnToCountry[+item[0]] || '-';
-
-        row = `${item[0]},${item[1]},${country},${item[2]}`;
-
-        return row;
-      })
-      .join('\n');
-
-    writeFileSync(`${__dirname}/../data/asns.csv`, asnsWithCountries);
+    console.log('Writing country data...')
+    writeFileSync(`${__dirname}/../data/asns_cidrs.csv`, cidrsWithCountries);
+    console.log('All done.')
   });

@@ -11,12 +11,11 @@ readFileSync(`${__dirname}/../data/asns.csv`).toString().split(/\s+/).forEach((i
     return undefined;
   }
 
-  const [asn, handle, country, description] = item.split(',');
+  const [asn, handle, description] = item.split(',');
 
   asns[asn] = {
     handle,
     description: (description || '').trim().replace(/"/g, ''),
-    country: country === '-' ? null : country,
   };
 });
 
@@ -36,7 +35,7 @@ readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString()
       return null;
     }
 
-    const [asn, cidr, first, last] = item.split(',');
+    const [asn, cidr, first, last, country] = item.split(',');
 
     const rangeIndex = +cidr.split('.')[0];
 
@@ -50,6 +49,7 @@ readFileSync(`${__dirname}/../data/asns_cidrs.csv`).toString()
       subnet: cidr,
       asn: +asn,
       hosting: !!dcAsns[asn],
+      country,
     };
 
     if (asns[asn]) {
