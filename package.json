@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "ip-index",
-  "version": "1.2.130",
+  "version": "1.2.131",
   "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
   "description": "Block-list containing IPs belonging to hosting data centers",
