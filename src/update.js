@@ -56,6 +56,7 @@ const patternsGood = [
   /clouditalia/i,
   /centurylink/i,
   /communic/i,
+  /TIF SCALEWAY/i
 ];
 
 const nordIps = readFileSync(`${__dirname}/../data/ips_nord.csv`).toString().split(/\n/);
