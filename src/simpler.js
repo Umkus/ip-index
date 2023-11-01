@@ -1,8 +1,15 @@
 import data from '../data/fullASN.json' assert { type: "json" }
 import { BlockList } from 'net'
-// import { Address4, Address6 } from 'ip-address'
+import { readFileSync } from 'fs'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-const keys = Object.keys(data)// .slice(0, 1000)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const dcAsns = readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\s+/)
+
+const keys = Object.keys(data)
 const index = {}
 
 console.time('index')
@@ -38,6 +45,8 @@ keys.forEach((asn) => {
         return
     }
 
+    info.type = dcAsns.includes(asn) ? 'hosting' : info.type
+
     data[asn]?.prefixes?.forEach((subnet) => addToIndex(subnet, asn, 'ipv4'))
     data[asn]?.prefixesIPv6?.forEach((subnet) => addToIndex(subnet, asn, 'ipv6'))
 })
@@ -45,30 +54,50 @@ keys.forEach((asn) => {
 console.timeEnd('index')
 
 
-// const ip = '2605:6400:2:1234::1'
-const ip = '8.8.8.8'
+export function getIpInfo(ip) {
+    let ipFamily = 'ipv4'
 
-let ipFamily = 'ipv4'
-if (ip.includes(':')) {
-    ipFamily = 'ipv6'
-}
+    if (ip.includes(':')) {
+        ipFamily = 'ipv6'
+    }
 
-console.time('search')
-const searchStart = getStart(ip)
+    console.time('search')
+    const searchStart = getStart(ip)
+    const matches = []
 
-const matches = []
+    if (index[searchStart]) {
+        const startBucket = index[searchStart]
 
-if (index[searchStart]) {
-    const startBucket = index[searchStart]
+        for (const candidateAsn in startBucket) {
+            const match = startBucket[candidateAsn].find((candidateBlocklist) => candidateBlocklist.check(ip, ipFamily))
 
-    for (const candidateAsn in startBucket) {
-        const match = startBucket[candidateAsn].find((candidateBlocklist) => candidateBlocklist.check(ip, ipFamily))
+            if (match) {
+                const subnet = match.rules[0].split(' ').pop()
+                const foundAsn = data[candidateAsn]
 
-        if (match) {
-            matches.push(data[candidateAsn])
+                const res = {
+                    subnet,
+                    asn: +candidateAsn,
+                    hosting: foundAsn.type === 'hosting',
+                    country: foundAsn.country,
+                    handle: foundAsn.descr.split(',')[0],
+                    description: foundAsn.org,
+                    subnetsNum: foundAsn?.prefixes?.length || 0 + foundAsn?.prefixesIPv6?.length || 0,
+                }
+
+                matches.push(res)
+            }
         }
     }
+
+    console.timeEnd('search')
+
+    return matches
 }
 
-console.timeEnd('search')
-console.log(matches)
+
+const ip = '2605:6400:2:1234::1'
+// const ip = '8.8.8.8'
+const res = getIpInfo(ip)
+
+console.log(res)
