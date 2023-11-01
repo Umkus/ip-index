@@ -79,14 +79,20 @@ export function getAsnInfo(asn) {
 }
 
 export function getIpInfo(ip) {
+  console.log('Fetching', ip)
   const ipIndex = ip.split(/[.:]/)[0];
   const ipInt = ipToInt(ip);
 
+  console.log('ipIndex', ipIndex)
   if (!rangesIndexed[ipIndex]) {
+    console.log('Missing in indexed')
     return [];
   }
 
-  return rangesIndexed[ipIndex]
+  const filtered = rangesIndexed[ipIndex]
     .filter((range) => range && +range.start <= ipInt && +range.end >= ipInt)
-    .map((match) => ({ ...match, ...asns[match.asn] }));
+
+  console.log('filtered', filtered)
+
+  return filtered.map((match) => ({ ...match, ...asns[match.asn] }));
 }

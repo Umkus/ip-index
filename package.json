@@ -12,13 +12,15 @@
     "postinstall": "node ./src/post-install.js"
   },
   "devDependencies": {
+    "@ip-location-db/asn-country": "^2.3.2022041118",
     "axios": "^0.26.1",
     "eslint": "^8.13.0",
-    "@ip-location-db/asn-country": "^2.3.2022041118",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ip-address": "^9.0.5"
+  },
   "author": "Mykhailo Gorianskyi"
 }
