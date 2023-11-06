@@ -10,7 +10,13 @@ http.createServer(async (req, res) => {
     'Content-Type': 'application/json',
   });
 
-  res.write(JSON.stringify(getIpInfo(ip)));
+  res.write(JSON.stringify(getIpInfo(ip), (key, value) => {
+    if (typeof value === "bigint") {
+      return value.toString()
+    }
+
+    return value;
+  }));
   res.end();
 })
   .listen(4000, '0.0.0.0');
