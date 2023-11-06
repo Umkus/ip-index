@@ -28,7 +28,7 @@ zip.extractAllTo(`${__dirname}/../data`, true)
 console.timeEnd('downloaded')
 
 console.time('parsed')
-const data = JSON.parse(readFileSync('../data/fullASN.json').toString())
+const data = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
 console.timeEnd('parsed')
 
 const keys = Object.keys(data)
