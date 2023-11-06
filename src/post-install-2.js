@@ -19,20 +19,21 @@ console.log('Creating index, this may take a minute...')
 
 
 
-console.time('downloading')
+console.time('downloaded')
 await axios.get('https://raw.githubusercontent.com/ipapi-is/ipapi/main/databases/fullASN.json.zip', { responseType: 'arraybuffer' })
     .then((res) => writeFileSync(fileAsnsZip, res.data))
 
 const zip = new AdmZip(fileAsnsZip)
 zip.extractAllTo(`${__dirname}/../data`, true)
+console.timeEnd('downloaded')
 
-import data from '../data/fullASN.json' assert { type: 'json' }
+console.time('parsed')
+const data = JSON.parse(readFileSync('../data/fullASN.json').toString())
+console.timeEnd('parsed')
 
 const keys = Object.keys(data)
-console.timeEnd('downloading')
 
-
-console.time('indexing')
+console.time('indexed')
 
 function addToIndex(subnet, asn, ipFamily, country) {
     let ip
@@ -72,6 +73,6 @@ index.sort((a, b) => {
     }
 })
 
-console.timeEnd('indexing')
+console.timeEnd('indexed')
 
 writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, index.map(({ asn, subnet, start, end, country }) => `${asn},${subnet},${start},${end},${country}`).join('\n'));
