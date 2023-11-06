@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "ip-index",
-  "version": "1.2.253",
+  "version": "1.3.0",
   "repository": "https://github.com/Umkus/ip-index.git",
   "license": "UNLICENCED",
   "description": "Block-list containing IPs belonging to hosting data centers",
@@ -9,7 +9,7 @@
   "scripts": {
     "deps:install": "npm install",
     "deps:update": "npm update && npm audit fix -f",
-    "postinstall": "node ./src/post-install.js"
+    "postinstall": "NODE_NO_WARNINGS=1 node ./src/post-install-2.js"
   },
   "devDependencies": {
     "@ip-location-db/asn-country": "^2.3.2022041118",
@@ -20,6 +20,7 @@
     "eslint-plugin-node": "^11.1.0"
   },
   "dependencies": {
+    "adm-zip": "^0.5.10",
     "ip-address": "^9.0.5"
   },
   "author": "Mykhailo Gorianskyi"

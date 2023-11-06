@@ -1,11 +1,12 @@
 import { getAsnInfo, getIpInfo } from './index.js'
 
 const ip = '8.8.8.8'
+// const ip = '2a00:1450:4016:809::2004'
 
-console.time('time')
+console.time('query time')
 const ipInfo = getIpInfo(ip)
-const asnInfo = getAsnInfo(ipInfo[0].asn)
-console.timeEnd('time')
+const asnInfo = getAsnInfo(ipInfo[0]?.asn)
+console.timeEnd('query time')
 
-console.log(ipInfo)
-console.log(asnInfo)
+console.log('IP Info', ipInfo)
+console.log('ASN Info', asnInfo)
