@@ -15,7 +15,7 @@ Updates daily. False positives are possible, use at own risk.
 For a quick and easy start and evaluation you can start the docker container directly:
 
 ```shell
-docker run -d -it -p 80:4000 --rm --name ipindex ghcr.io/umkus/ipindex-node:latest 
+docker run --pull always -it -p 80:4000 --rm ghcr.io/umkus/ipindex-node:latest 
 ```
 
 For a more advanced usage with pre-configured nginx throttling and caching:
