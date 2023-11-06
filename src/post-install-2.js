@@ -9,11 +9,12 @@ import axios from 'axios'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const fileCidrs = `${__dirname}/../data/asns_cidrs.csv`;
+const fileNord = `${__dirname}/../data/ips_nord.csv`;
 const fileAsnsZip = `${__dirname}/../data/fullASN.json.zip`;
 const fileAsnsCsv = `${__dirname}/../data/asns.csv`;
 
 let index = []
+const opts = { responseType: 'blob' };
 
 console.log('Creating index, this may take a minute...')
 
@@ -21,7 +22,12 @@ console.time('downloaded')
 await axios.get('https://raw.githubusercontent.com/ipapi-is/ipapi/main/databases/fullASN.json.zip', { responseType: 'arraybuffer' })
     .then((res) => writeFileSync(fileAsnsZip, res.data))
 
-axios.get('https://github.com/ipverse/asn-info/raw/master/as.csv', { responseType: 'blob' }).then((res) => writeFileSync(fileAsnsCsv, res.data))
+const promises = [
+    axios.get('https://github.com/ipverse/asn-info/raw/master/as.csv', opts).then((res) => writeFileSync(fileAsnsCsv, res.data)),
+    axios.get('https://github.com/Umkus/nordvpn-ips/releases/download/ips/ips.csv', opts).then((res) => writeFileSync(fileNord, res.data)),
+];
+
+await Promise.all(promises)
 
 const zip = new AdmZip(fileAsnsZip)
 zip.extractAllTo(`${__dirname}/../data`, true)
