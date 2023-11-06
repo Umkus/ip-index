@@ -1,6 +1,4 @@
 FROM node:alpine
-COPY data /var/www/data
-COPY src /var/www/src
-COPY package.json /var/www/
+COPY . /var/www/
 WORKDIR /var/www
 ENTRYPOINT node src/server.js
