@@ -31,17 +31,17 @@ jobs:
         run: |
           docker compose build
           docker compose push
-      - name: Update ASNs
-        run: node ./src/update.js
-      - uses: EndBug/add-and-commit@v4
-        with:
-          add: .
-          message: Updated ASNs list
-      - name: New version and tag
-        run: npm version patch
-      - name: Push changes and the new tag
-        run: git push --follow-tags
-      - uses: JS-DevTools/npm-publish@v1
-        name: Publishing to NPM
-        with:
-          token: ${{ secrets.NODE_AUTH_TOKEN }}
+      #- name: Update ASNs
+      #  run: node ./src/update.js
+      #- uses: EndBug/add-and-commit@v4
+      #  with:
+      #    add: .
+      #    message: Updated ASNs list
+      #- name: New version and tag
+      #  run: npm version patch
+      #- name: Push changes and the new tag
+      #  run: git push --follow-tags
+      #- uses: JS-DevTools/npm-publish@v1
+      #  name: Publishing to NPM
+      #  with:
+      #    token: ${{ secrets.NODE_AUTH_TOKEN }}
