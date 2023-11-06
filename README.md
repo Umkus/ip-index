@@ -15,10 +15,10 @@ Updates daily. False positives are possible, use at own risk.
 For a quick and easy start and evaluation you can start the docker container directly:
 
 ```shell
-docker run --pull always -it -p 80:4000 --rm ghcr.io/umkus/ipindex-node:latest 
+docker run --pull always -d -it -p 80:4000 --rm ghcr.io/umkus/ipindex-node:latest
 ```
 
-For a more advanced usage with pre-configured nginx throttling and caching:
+Alternatively for a more advanced usage with pre-configured nginx throttling and caching run this:
 
 ```shell
 # git clone git@github.com:Umkus/ip-index.git
@@ -26,33 +26,22 @@ For a more advanced usage with pre-configured nginx throttling and caching:
 docker compose -f docker-compose.yml up -d
 ```
 
-Now open this url in browser: [http://localhost/?ip=8.8.8.8](http://localhost/?ip=8.8.8.8)
+Now open this url in your browser: [http://localhost/?ip=8.8.8.8](http://localhost/?ip=8.8.8.8)
 
 You will see the following data structure:
 
 ```json
 [
   {
-    "start": 134217728,
-    "end": 142606335,
-    "subnet": "8.0.0.0/9",
-    "asn": 3356,
-    "hosting": false,
-    "handle": "LEVEL3",
-    "description": "Level 3 Parent",
-    "country": "US",
-    "subnetsNum": 531
-  },
-  {
-    "start": 134744064,
-    "end": 134744319,
+    "start": "134744064",
+    "end": "134744319",
     "subnet": "8.8.8.0/24",
     "asn": 15169,
     "hosting": true,
-    "handle": "GOOGLE",
-    "description": "Google LLC",
     "country": "US",
-    "subnetsNum": 76
+    "handle": "GOOGLE",
+    "description": "Google",
+    "subnetsNum": 956
   }
 ]
 
