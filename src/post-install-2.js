@@ -11,6 +11,8 @@ const __dirname = dirname(__filename);
 
 const fileNord = `${__dirname}/../data/ips_nord.csv`;
 const fileAsnsZip = `${__dirname}/../data/fullASN.json.zip`;
+const fileGeolocationsV4Zip = `${__dirname}/../data/geolocationDatabaseIPv4.csv.zip`;
+const fileGeolocationsV6Zip = `${__dirname}/../data/geolocationDatabaseIPv6.csv.zip`;
 const fileAsnsCsv = `${__dirname}/../data/asns.csv`;
 
 let index = []
@@ -21,6 +23,10 @@ console.log('Creating index, this may take a minute...')
 console.time('downloaded')
 await axios.get('https://raw.githubusercontent.com/ipapi-is/ipapi/main/databases/fullASN.json.zip', { responseType: 'arraybuffer' })
     .then((res) => writeFileSync(fileAsnsZip, res.data))
+await axios.get('https://raw.githubusercontent.com/ipapi-is/ipapi/main/databases/geolocationDatabaseIPv4.csv.zip', { responseType: 'arraybuffer' })
+    .then((res) => writeFileSync(fileGeolocationsV4Zip, res.data))
+await axios.get('https://raw.githubusercontent.com/ipapi-is/ipapi/main/databases/geolocationDatabaseIPv6.csv.zip', { responseType: 'arraybuffer' })
+    .then((res) => writeFileSync(fileGeolocationsV6Zip, res.data))
 
 const promises = [
     axios.get('https://github.com/ipverse/asn-info/raw/master/as.csv', opts).then((res) => writeFileSync(fileAsnsCsv, res.data)),
@@ -29,15 +35,22 @@ const promises = [
 
 await Promise.all(promises)
 
-const zip = new AdmZip(fileAsnsZip)
-zip.extractAllTo(`${__dirname}/../data`, true)
+const asnsZip = new AdmZip(fileAsnsZip)
+asnsZip.extractAllTo(`${__dirname}/../data`, true)
+const geolocationsV4Zip = new AdmZip(fileGeolocationsV4Zip)
+geolocationsV4Zip.extractAllTo(`${__dirname}/../data`, true)
+const geolocationsV6Zip = new AdmZip(fileGeolocationsV6Zip)
+geolocationsV6Zip.extractAllTo(`${__dirname}/../data`, true)
 console.timeEnd('downloaded')
 
 console.time('parsed')
-const data = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
-console.timeEnd('parsed')
+const asnsData = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
+const geolocationV4Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`).toString()
+const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`).toString()
 
-const keys = Object.keys(data)
+console.log('geolocationV4Data', geolocationV4Data.split('\n').length)
+console.log('geolocationV6Data', geolocationV6Data.split('\n').length)
+console.timeEnd('parsed')
 
 console.time('indexed')
 
@@ -51,12 +64,14 @@ function addToIndex(subnet, asn, ipFamily, country) {
 
     const end = ip.endAddress().bigInteger().toString()
     const start = ip.startAddress().bigInteger().toString()
+    
+    // TODO match lat/lng
 
     index.push({ asn, subnet, start, end, country })
 }
 
-keys.forEach((asn) => {
-    const info = data[asn]
+Object.keys(asnsData).forEach((asn) => {
+    const info = asnsData[asn]
 
     if (!info?.active) {
         return
