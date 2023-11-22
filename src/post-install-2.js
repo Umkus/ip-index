@@ -45,11 +45,52 @@ console.timeEnd('downloaded')
 
 console.time('parsed')
 const asnsData = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
-const geolocationV4Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`).toString()
-const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`).toString()
+const geolocationV4RawData = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`)
+    .toString()
+    .split('\n')
+    .slice(1) // skip header
+    .filter(Boolean)
+const geolocationV6RawData = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`)
+    .toString()
+    .split('\n')
+    .slice(1) // skip header
+    .filter(Boolean)
+const geolocationData = [...geolocationV4RawData, ...geolocationV6RawData].map(row => {
+    const [ipFamily,startIp,endIp,,,,,,,,latitude,longitude,geoAccuracy] = row.split(',')
 
-console.log('geolocationV4Data', geolocationV4Data.split('\n').length)
-console.log('geolocationV6Data', geolocationV6Data.split('\n').length)
+    let parsedStartIp
+    let parsedEndIp
+    if (ipFamily === '6') {
+        parsedStartIp = new Address6(startIp)
+        parsedEndIp = new Address6(endIp)
+    } else {
+        parsedStartIp = new Address4(startIp)
+        parsedEndIp = new Address4(endIp)
+    }
+
+    const start = parsedStartIp.startAddress().bigInteger().toString()
+    const end = parsedEndIp.endAddress().bigInteger().toString()
+
+    return {
+        ipFamily,
+        start,
+        end,
+        latitude,
+        longitude,
+        geoAccuracy,
+    }
+}).sort((a, b) => {
+    const aNum = BigInt(a.start)
+    const bNum = BigInt(b.start)
+
+    if (aNum < bNum) {
+        return -1
+    } else if (aNum > bNum) {
+        return 1
+    } else {
+        return 0
+    }
+})
 console.timeEnd('parsed')
 
 console.time('indexed')
