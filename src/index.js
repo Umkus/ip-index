@@ -99,7 +99,7 @@ export function getAsnInfo(asn) {
   return { ...asns[asn], subnets: asnCidrs[asn] || [] }
 }
 
-export function getIpInfo(ip) {
+function getAsns(ip) {
   const ipPosition1 = getPosition(ip, 0)
   let ipPosition2 = getPosition(ip, 1)
   const ipInt = ipToInt(ip)
@@ -122,4 +122,11 @@ export function getIpInfo(ip) {
 
   return filtered
     .map((match) => ({ ...match, ...asns[match.asn] }))
+}
+
+
+export function getIpInfo(ip) {
+  return {
+    asns: getAsns(ip)
+  }
 }
