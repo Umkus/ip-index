@@ -142,7 +142,7 @@ function getAsns(ip) {
     .map((match) => ({ ...match, ...asns[match.asn] }))
 }
 
-function getGeolocation(ip) {
+function getGeolocations(ip) {
   const ipInt = ipToInt(ip)
 
   const validRanges = []
@@ -184,8 +184,8 @@ function getGeolocation(ip) {
 export function getIpInfo(ip) {
   console.time("fetch")
   const asns = getAsns(ip)
-  const geolocation = getGeolocation(ip)
+  const geolocations = getGeolocations(ip)
   console.timeEnd("fetch")
 
-  return { asns, geolocation }
+  return { asns, geolocations }
 }

@@ -31,20 +31,30 @@ Now open this url in your browser: [http://localhost/?ip=8.8.8.8](http://localho
 You will see the following data structure:
 
 ```json
-[
-  {
-    "start": "134744064",
-    "end": "134744319",
-    "subnet": "8.8.8.0/24",
-    "asn": 15169,
-    "hosting": true,
-    "country": "US",
-    "handle": "GOOGLE",
-    "description": "Google",
-    "subnetsNum": 956
-  }
-]
-
+{
+  "asns": [
+    {
+      "start": "134744064",
+      "end": "134744319",
+      "subnet": "8.8.8.0/24",
+      "asn": 15169,
+      "hosting": true,
+      "country": "US",
+      "handle": "GOOGLE",
+      "description": "Google",
+      "subnetsNum": 956
+    }
+  ],
+  "geolocations": [
+    {
+      "start": "134217728",
+      "end": "142606335",
+      "latitude": "32.50931",
+      "longitue": "-92.1193",
+      "accuracy": "4"
+    }
+  ]
+}
 ```
 
 ## Why this exists
