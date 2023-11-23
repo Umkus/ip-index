@@ -55,6 +55,7 @@ const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabase
 console.timeEnd('parsed')
 
 console.time('indexed')
+// Sort by range start DESC
 const compareForIndex = (a, b) => {
     const aNum = a.start
     const bNum = b.start

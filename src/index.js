@@ -155,7 +155,29 @@ function getGeolocation(ip) {
       validRanges.push(range)
     }
   }
-  return validRanges
+
+  // Sort by accuracy DESC, then by range length DESC
+  return validRanges.sort((a, b) => {
+    const aNum = a.accuracy
+    const bNum = b.accuracy
+  
+    if (aNum < bNum) {
+      return -1
+    } else if (aNum > bNum) {
+      return 1
+    } else {
+      const a2Num = a.end - a.start
+      const b2Num = b.end - b.start
+
+      if (a2Num < b2Num) {
+        return -1
+      } else if (a2Num > b2Num) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+  })
 }
 
 
