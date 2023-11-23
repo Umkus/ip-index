@@ -94,7 +94,6 @@ readFileSync(`${__dirname}/../data/geolocation.csv`).toString()
       accuracy
     }
 
-    // TODO: Optimize with index
     geolocationRangesIndexed.push(range) 
   })
 
@@ -146,15 +145,27 @@ function getGeolocations(ip) {
   const ipInt = ipToInt(ip)
 
   const validRanges = []
-  for (const range of geolocationRangesIndexed) {
-    const { start, end } = range
-    if (ipInt < start) break // we can stop searching because array is sorted by start
+  const binarySearch = (arr, val, startIdx = 0, endIdx = arr.length - 1) => {
+    if (startIdx > endIdx) return
+  
+    const midIdx = Math.floor((startIdx + endIdx) / 2)
+    const mid = arr[midIdx]
+    
+    if (val >= mid.start && val <= mid.end) {
+      validRanges.push(mid)
+      // Store and continue to search
+    }
 
+    if (startIdx === endIdx) return
 
-    if (ipInt >= start && ipInt <= end) {
-      validRanges.push(range)
+    if (val < mid.start) { // It may only be in lower
+      binarySearch(arr, val, startIdx, midIdx - 1)
+    } else { // It may be in both because ranges can overlap
+      binarySearch(arr, val, startIdx, midIdx - 1)
+      binarySearch(arr, val, midIdx + 1, endIdx)
     }
   }
+  binarySearch(geolocationRangesIndexed, ipInt)
 
   // Sort by accuracy DESC, then by range length DESC
   return validRanges.sort((a, b) => {
