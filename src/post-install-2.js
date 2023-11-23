@@ -59,13 +59,7 @@ const compareForIndex = (a, b) => {
     const aNum = a.start
     const bNum = b.start
 
-    if (aNum < bNum) {
-        return -1
-    } else if (aNum > bNum) {
-        return 1
-    } else {
-        return 0
-    }
+    return aNum.compareTo(bNum)
 }
 function getAsnIndex(subnet, asn, ipFamily, country) {
     let ip
@@ -127,9 +121,6 @@ const geolocationIndex = [...geolocationV4Data, ...geolocationV6Data]
             accuracy,
         }
     }).sort(compareForIndex)
-
-console.log(geolocationIndex.slice(0, 10))
-
 console.timeEnd('indexed')
 
 writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, asnsIndex.map(({ asn, subnet, start, end, country }) => `${asn},${subnet},${start},${end},${country}`).join('\n'));
