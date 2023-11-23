@@ -27,7 +27,8 @@ readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\s+/)
   })
 
 const asnCidrs = {}
-const rangesIndexed = {}
+const asnRangesIndexed = {}
+const geolocationRangesIndexed = []
 
 function getPosition(subnet, start) {
   const part = subnet.split(/[:\.]/)[start]
@@ -38,24 +39,20 @@ function getPosition(subnet, start) {
 
 readFileSync(`${__dirname}/../data/asns_cidrs_2.csv`).toString()
   .split(/\s+/)
-  .filter((i) => i)
+  .filter(Boolean)
   .forEach((item, index) => {
-    if (!index || !item) {
-      return null
-    }
-
     const [asn, cidr, first, last, country] = item.split(',')
 
     const rangeIndex = getPosition(cidr, 0)
 
-    if (!rangesIndexed[rangeIndex]) {
-      rangesIndexed[rangeIndex] = []
+    if (!asnRangesIndexed[rangeIndex]) {
+      asnRangesIndexed[rangeIndex] = []
     }
 
     const rangeIndex2 = getPosition(cidr, 1)
 
-    if (!rangesIndexed[rangeIndex][rangeIndex2]) {
-      rangesIndexed[rangeIndex][rangeIndex2] = []
+    if (!asnRangesIndexed[rangeIndex][rangeIndex2]) {
+      asnRangesIndexed[rangeIndex][rangeIndex2] = []
     }
 
     const range = {
@@ -77,7 +74,28 @@ readFileSync(`${__dirname}/../data/asns_cidrs_2.csv`).toString()
       asns[asn].subnetsNum = (asns[asn].subnetsNum || 0) + 1
     }
 
-    rangesIndexed[rangeIndex][rangeIndex2].push(range)
+    asnRangesIndexed[rangeIndex][rangeIndex2].push(range)
+  })
+
+readFileSync(`${__dirname}/../data/geolocation.csv`).toString()
+  .split(/\s+/)
+  .filter(Boolean)
+  .forEach((item) => {
+    const [start, end, latitude, longitue, accuracy] = item.split(',')
+
+    const startB = BigInt(start)
+    const endB = BigInt(end)
+
+    const range = {
+      start: startB,
+      end: endB,
+      latitude,
+      longitue,
+      accuracy
+    }
+
+    // TODO: Optimize with index
+    geolocationRangesIndexed.push(range) 
   })
 
 function ipToInt(ip) {
@@ -104,29 +122,38 @@ function getAsns(ip) {
   let ipPosition2 = getPosition(ip, 1)
   const ipInt = ipToInt(ip)
 
-  if (!rangesIndexed[ipPosition1]) {
+  if (!asnRangesIndexed[ipPosition1]) {
     return []
   }
 
-  if (!rangesIndexed[ipPosition1][ipPosition2]) {
-    const availableKeys = Object.keys(rangesIndexed[ipPosition1])
+  if (!asnRangesIndexed[ipPosition1][ipPosition2]) {
+    const availableKeys = Object.keys(asnRangesIndexed[ipPosition1])
     ipPosition2 = availableKeys.reverse().find((key) => key <= ipPosition2)
 
-    if (!rangesIndexed[ipPosition1][ipPosition2]) {
+    if (!asnRangesIndexed[ipPosition1][ipPosition2]) {
       return []
     }
   }
 
-  const filtered = rangesIndexed[ipPosition1][ipPosition2]
+  const filtered = asnRangesIndexed[ipPosition1][ipPosition2]
     .filter((range) => range && range.start <= ipInt && range.end >= ipInt)
 
   return filtered
     .map((match) => ({ ...match, ...asns[match.asn] }))
 }
 
+function getGeolocation(ip) {
+  const ipInt = ipToInt(ip)
+
+  return geolocationRangesIndexed.filter(({ start, end }) => ipInt >= start && ipInt <= end)
+}
+
 
 export function getIpInfo(ip) {
-  return {
-    asns: getAsns(ip)
-  }
+  console.time("fetch")
+  const asns = getAsns(ip)
+  const geolocation = getGeolocation(ip)
+  console.timeEnd("fetch")
+
+  return { asns, geolocation }
 }
