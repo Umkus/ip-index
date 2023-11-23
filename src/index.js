@@ -145,7 +145,17 @@ function getAsns(ip) {
 function getGeolocation(ip) {
   const ipInt = ipToInt(ip)
 
-  return geolocationRangesIndexed.filter(({ start, end }) => ipInt >= start && ipInt <= end)
+  const validRanges = []
+  for (const range of geolocationRangesIndexed) {
+    const { start, end } = range
+    if (ipInt < start) break // we can stop searching because array is sorted by start
+
+
+    if (ipInt >= start && ipInt <= end) {
+      validRanges.push(range)
+    }
+  }
+  return validRanges
 }
 
 
