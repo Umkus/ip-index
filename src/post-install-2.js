@@ -45,55 +45,61 @@ console.timeEnd('downloaded')
 
 console.time('parsed')
 const asnsData = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
-const geolocationV4RawData = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`)
+const geolocationV4Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`)
     .toString()
     .split('\n')
     .slice(1) // skip header
     .filter(Boolean)
-const geolocationV6RawData = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`)
+    .map(row => {
+        const [,startIp,endIp,,,,,,,,latitude,longitude,geoAccuracy] = row.split(',')
+
+        const parsedStartIp = new Address4(startIp)
+        const parsedEndIp = new Address4(endIp)
+
+        const start = parsedStartIp.startAddress().bigInteger()
+        const end = parsedEndIp.endAddress().bigInteger()
+
+        return {
+            start,
+            end,
+            latitude,
+            longitude,
+            geoAccuracy,
+        }
+    })
+const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`)
     .toString()
     .split('\n')
     .slice(1) // skip header
     .filter(Boolean)
-const geolocationData = [...geolocationV4RawData, ...geolocationV6RawData].map(row => {
-    const [ipFamily,startIp,endIp,,,,,,,,latitude,longitude,geoAccuracy] = row.split(',')
+    .map(row => {
+        const [,startIp,endIp,,,,,,,,latitude,longitude,geoAccuracy] = row.split(',')
 
-    let parsedStartIp
-    let parsedEndIp
-    if (ipFamily === '6') {
-        parsedStartIp = new Address6(startIp)
-        parsedEndIp = new Address6(endIp)
-    } else {
-        parsedStartIp = new Address4(startIp)
-        parsedEndIp = new Address4(endIp)
-    }
+        const parsedStartIp = new Address6(startIp)
+        const parsedEndIp = new Address6(endIp)
 
-    const start = parsedStartIp.startAddress().bigInteger().toString()
-    const end = parsedEndIp.endAddress().bigInteger().toString()
+        const start = parsedStartIp.startAddress().bigInteger()
+        const end = parsedEndIp.endAddress().bigInteger()
 
-    return {
-        ipFamily,
-        start,
-        end,
-        latitude,
-        longitude,
-        geoAccuracy,
-    }
-}).sort((a, b) => {
-    const aNum = BigInt(a.start)
-    const bNum = BigInt(b.start)
-
-    if (aNum < bNum) {
-        return -1
-    } else if (aNum > bNum) {
-        return 1
-    } else {
-        return 0
-    }
-})
+        return {
+            start,
+            end,
+            latitude,
+            longitude,
+            geoAccuracy,
+        }
+    })
 console.timeEnd('parsed')
 
 console.time('indexed')
+
+function overlaps(a, b) {
+    if (b.start <= a.start) {
+        return b.end >= a.start
+    }
+
+    return b.start <= a.end
+}
 
 function addToIndex(subnet, asn, ipFamily, country) {
     let ip
@@ -103,15 +109,31 @@ function addToIndex(subnet, asn, ipFamily, country) {
         ip = new Address4(subnet)
     }
 
-    const end = ip.endAddress().bigInteger().toString()
-    const start = ip.startAddress().bigInteger().toString()
-    
-    // TODO match lat/lng
+    const start = ip.startAddress().bigInteger()
+    const end = ip.endAddress().bigInteger()
 
-    index.push({ asn, subnet, start, end, country })
+    let foundGeo
+    if (ipFamily === 'ipv6') {
+        foundGeo = geolocationV6Data.find(geo => overlaps(geo, { start, end }))
+    } else {
+        foundGeo = geolocationV4Data.find(geo => overlaps(geo, { start, end }))
+    }
+
+    const { latitude, longitude, geoAccuracy } = foundGeo || {}
+
+    index.push({
+        asn,
+        subnet,
+        start,
+        end,
+        country,
+        latitude,
+        longitude,
+        geoAccuracy
+    })
 }
 
-Object.keys(asnsData).forEach((asn) => {
+Object.keys(asnsData).forEach((asn, idx, arr) => {
     const info = asnsData[asn]
 
     if (!info?.active) {
@@ -120,11 +142,15 @@ Object.keys(asnsData).forEach((asn) => {
 
     info?.prefixes?.forEach((subnet) => addToIndex(subnet, asn, 'ipv4', info.country))
     info?.prefixesIPv6?.forEach((subnet) => addToIndex(subnet, asn, 'ipv6', info.country))
+
+    if (idx % 100) {
+        console.log(`Processing...${idx}/${arr.length}`)
+    }
 })
 
 index.sort((a, b) => {
-    const aNum = BigInt(a.start)
-    const bNum = BigInt(b.start)
+    const aNum = a.start
+    const bNum = b.start
 
     if (aNum < bNum) {
         return -1
@@ -137,4 +163,4 @@ index.sort((a, b) => {
 
 console.timeEnd('indexed')
 
-writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, index.map(({ asn, subnet, start, end, country }) => `${asn},${subnet},${start},${end},${country}`).join('\n'));
+writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, index.map(({ asn, subnet, start, end, country, latitude, longitude, geoAccuracy }) => `${asn},${subnet},${start},${end},${country},${latitude},${longitude},${geoAccuracy}`).join('\n'));
