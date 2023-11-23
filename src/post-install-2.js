@@ -92,15 +92,6 @@ const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabase
 console.timeEnd('parsed')
 
 console.time('indexed')
-
-function overlaps(a, b) {
-    if (b.start <= a.start) {
-        return b.end >= a.start
-    }
-
-    return b.start <= a.end
-}
-
 function addToIndex(subnet, asn, ipFamily, country) {
     let ip
     if (ipFamily === 'ipv6') {
@@ -112,14 +103,6 @@ function addToIndex(subnet, asn, ipFamily, country) {
     const start = ip.startAddress().bigInteger()
     const end = ip.endAddress().bigInteger()
 
-    let foundGeo
-    if (ipFamily === 'ipv6') {
-        foundGeo = geolocationV6Data.find(geo => overlaps(geo, { start, end }))
-    } else {
-        foundGeo = geolocationV4Data.find(geo => overlaps(geo, { start, end }))
-    }
-
-    const { latitude, longitude, geoAccuracy } = foundGeo || {}
 
     index.push({
         asn,
@@ -127,9 +110,6 @@ function addToIndex(subnet, asn, ipFamily, country) {
         start,
         end,
         country,
-        latitude,
-        longitude,
-        geoAccuracy
     })
 }
 
@@ -142,10 +122,6 @@ Object.keys(asnsData).forEach((asn, idx, arr) => {
 
     info?.prefixes?.forEach((subnet) => addToIndex(subnet, asn, 'ipv4', info.country))
     info?.prefixesIPv6?.forEach((subnet) => addToIndex(subnet, asn, 'ipv6', info.country))
-
-    if (idx % 100) {
-        console.log(`Processing...${idx}/${arr.length}`)
-    }
 })
 
 index.sort((a, b) => {
@@ -163,4 +139,6 @@ index.sort((a, b) => {
 
 console.timeEnd('indexed')
 
-writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, index.map(({ asn, subnet, start, end, country, latitude, longitude, geoAccuracy }) => `${asn},${subnet},${start},${end},${country},${latitude},${longitude},${geoAccuracy}`).join('\n'));
+writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, index.map(({ asn, subnet, start, end, country }) => `${asn},${subnet},${start},${end},${country}`).join('\n'));
+writeFileSync(`${__dirname}/../data/geolocation_ipv4.csv`, geolocationV4Data.map(({ start, end, latitude, longitude, geoAccuracy }) => `${start},${end},${latitude},${longitude},${geoAccuracy}`).join('\n'));
+writeFileSync(`${__dirname}/../data/geolocation_ipv6.csv`, geolocationV6Data.map(({ start, end, latitude, longitude, geoAccuracy }) => `${start},${end},${latitude},${longitude},${geoAccuracy}`).join('\n'));
