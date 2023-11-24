@@ -28,7 +28,7 @@ readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\s+/)
 
 const asnCidrs = {}
 const asnRangesIndexed = {}
-const geolocationRangesIndexed = []
+const geolocationRanges = []
 
 function getPosition(subnet, start) {
   const part = subnet.split(/[:\.]/)[start]
@@ -77,7 +77,7 @@ readFileSync(`${__dirname}/../data/asns_cidrs_2.csv`).toString()
     asnRangesIndexed[rangeIndex][rangeIndex2].push(range)
   })
 
-readFileSync(`${__dirname}/../data/geolocation.csv`).toString()
+readFileSync(`${__dirname}/../data/geolocations.csv`).toString()
   .split(/\s+/)
   .filter(Boolean)
   .forEach((item) => {
@@ -94,7 +94,7 @@ readFileSync(`${__dirname}/../data/geolocation.csv`).toString()
       accuracy
     }
 
-    geolocationRangesIndexed.push(range) 
+    geolocationRanges.push(range) 
   })
 
 function ipToInt(ip) {
@@ -165,7 +165,7 @@ function getGeolocations(ip) {
       binarySearch(arr, val, midIdx + 1, endIdx)
     }
   }
-  binarySearch(geolocationRangesIndexed, ipInt)
+  binarySearch(geolocationRanges, ipInt)
 
   // Sort by accuracy DESC, then by range length DESC
   return validRanges.sort((a, b) => {

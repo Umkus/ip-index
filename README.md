@@ -23,6 +23,7 @@ Alternatively for a more advanced usage with pre-configured nginx throttling and
 ```shell
 # git clone git@github.com:Umkus/ip-index.git
 # cd ip-index
+# npm i
 docker compose -f docker-compose.yml up -d
 ```
 
@@ -85,6 +86,7 @@ To use docker locally run this:
 ```shell
 # git clone git@github.com:Umkus/ip-index.git
 # cd ip-index
+# npm i
 docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
 ```
 

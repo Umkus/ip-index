@@ -44,11 +44,11 @@ console.timeEnd('downloaded')
 
 console.time('parsed')
 const asnsData = JSON.parse(readFileSync(`${__dirname}/../data/fullASN.json`).toString())
-const geolocationV4Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`)
+const geolocationsV4Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv4.csv`)
     .toString()
     .split('\n')
     .slice(1) // skip header
-const geolocationV6Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`)
+const geolocationsV6Data = readFileSync(`${__dirname}/../data/geolocationDatabaseIPv6.csv`)
     .toString()
     .split('\n')
     .slice(1) // skip header
@@ -96,7 +96,7 @@ const asnsIndex = Object.keys(asnsData).flatMap((asn) => {
     ]
 }).sort(compareForIndex)
 
-const geolocationIndex = [...geolocationV4Data, ...geolocationV6Data]
+const geolocationsIndex = [...geolocationsV4Data, ...geolocationsV6Data]
     .filter(Boolean)
     .map(row => {
         const [ipFamily,startIp,endIp,,,,,,,,latitude,longitude,accuracy] = row.split(',')
@@ -125,4 +125,4 @@ const geolocationIndex = [...geolocationV4Data, ...geolocationV6Data]
 console.timeEnd('indexed')
 
 writeFileSync(`${__dirname}/../data/asns_cidrs_2.csv`, asnsIndex.map(({ asn, subnet, start, end, country }) => `${asn},${subnet},${start},${end},${country}`).join('\n'));
-writeFileSync(`${__dirname}/../data/geolocation.csv`, geolocationIndex.map(({ start, end, latitude, longitude, accuracy }) => `${start},${end},${latitude},${longitude},${accuracy}`).join('\n'));
+writeFileSync(`${__dirname}/../data/geolocations.csv`, geolocationsIndex.map(({ start, end, latitude, longitude, accuracy }) => `${start},${end},${latitude},${longitude},${accuracy}`).join('\n'));
