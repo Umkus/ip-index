@@ -79,6 +79,15 @@ You will see the following data structure:
 }
 ```
 
+## Dev
+
+To use docker locally run this:
+```shell
+# git clone git@github.com:Umkus/ip-index.git
+# cd ip-index
+docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+```
+
 ## Why this exists
 
 Most existing solutions to detect VPNs/Proxies provide HTTP APIs or binary databases on a subscription model. Downsides of the existing projects might be at least one of the following:
