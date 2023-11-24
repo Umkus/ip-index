@@ -192,11 +192,18 @@ function getGeolocations(ip) {
 }
 
 
-export function getIpInfo(ip) {
+export function getIpInfo(ip, withGeolocations = false) {
+  let res
+
   console.time("fetch")
   const asns = getAsns(ip)
-  const geolocations = getGeolocations(ip)
+  if (withGeolocations) {
+    const geolocations = getGeolocations(ip)
+    res = { asns, geolocations }
+  } else {
+    res = asns
+  }
   console.timeEnd("fetch")
 
-  return { asns, geolocations }
+  return res
 }

@@ -31,6 +31,28 @@ Now open this url in your browser: [http://localhost/?ip=8.8.8.8](http://localho
 You will see the following data structure:
 
 ```json
+[
+  {
+    "start": "134744064",
+    "end": "134744319",
+    "subnet": "8.8.8.0/24",
+    "asn": 15169,
+    "hosting": true,
+    "country": "US",
+    "handle": "GOOGLE",
+    "description": "Google",
+    "subnetsNum": 956
+  }
+]
+```
+
+### Geolocations
+
+Open this url in your browser: [http://localhost/?ip=8.8.8.8&withGeolocations](http://localhost/?ip=8.8.8.8&withGeolocations)
+
+You will see the following data structure:
+
+```json
 {
   "asns": [
     {
