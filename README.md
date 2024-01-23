@@ -23,6 +23,7 @@ Alternatively for a more advanced usage with pre-configured nginx throttling and
 ```shell
 # git clone git@github.com:Umkus/ip-index.git
 # cd ip-index
+# npm i
 docker compose -f docker-compose.yml up -d
 ```
 
@@ -44,7 +45,49 @@ You will see the following data structure:
     "subnetsNum": 956
   }
 ]
+```
 
+### Geolocations
+
+Open this url in your browser: [http://localhost/?ip=8.8.8.8&withGeolocations](http://localhost/?ip=8.8.8.8&withGeolocations)
+
+You will see the following data structure:
+
+```json
+{
+  "asns": [
+    {
+      "start": "134744064",
+      "end": "134744319",
+      "subnet": "8.8.8.0/24",
+      "asn": 15169,
+      "hosting": true,
+      "country": "US",
+      "handle": "GOOGLE",
+      "description": "Google",
+      "subnetsNum": 956
+    }
+  ],
+  "geolocations": [
+    {
+      "start": "134217728",
+      "end": "142606335",
+      "latitude": "32.50931",
+      "longitue": "-92.1193",
+      "accuracy": "4"
+    }
+  ]
+}
+```
+
+## Dev
+
+To use docker locally run this:
+```shell
+# git clone git@github.com:Umkus/ip-index.git
+# cd ip-index
+# npm i
+docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
 ```
 
 ## Why this exists
