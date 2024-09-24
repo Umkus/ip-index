@@ -40,7 +40,7 @@ const dcList = readFileSync(asnsDcs).toString()
 
 const asns = {}
 
-let asnsContent = 'asn,handle,description\n'
+let asnsContent = 'asn,handle\n'
 
 function getCIDR6(startBigInt, endBigInt) {
     let mask = BigInt(128); // for IPv6, the mask starts at 128 (128 bits)

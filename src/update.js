@@ -15,7 +15,7 @@ const csvAsns = readFileSync(`${__dirname}/../data/asns.csv`).toString()
   .map((row) => {
     const items = row.split(',', 3);
     items[0] = +items[0];
-    items[2] = items[2].replace('"', '');
+    items[1] = items[1].replace('"', '');
     return items;
   });
 csvAsns.shift();
@@ -63,9 +63,9 @@ const nordIps = readFileSync(`${__dirname}/../data/ips_nord.csv`).toString().spl
 
 const badAsns = csvAsns.filter((item) => {
   for (let patBad of patternsBad) {
-    if (patBad.test(`${item[1]} ${item[2]}`)) {
+    if (patBad.test(`${item[1]}`)) {
       for (let patGood of patternsGood) {
-        if (patGood.test(`${item[1]} ${item[2]}`)) {
+        if (patGood.test(`${item[1]}`)) {
           return false;
         }
       }
