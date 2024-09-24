@@ -27,7 +27,8 @@ readFileSync(`${__dirname}/../data/asns_dcs.csv`).toString().split(/\s+/)
   })
 
 const asnCidrs = {}
-const rangesIndexed = {}
+const rangesIndexedV4 = {}
+const rangesIndexedV6 = {}
 
 function getPosition(subnet, start) {
   const part = subnet.split(/[:\.]/)[start]
@@ -36,49 +37,59 @@ function getPosition(subnet, start) {
   return parseInt(part, isIpV6 ? 16 : 10)
 }
 
-readFileSync(`${__dirname}/../data/asns_cidrs_2.csv`).toString()
+// Check if ip 4 vs 6
+
+function indexRow(item, index, indexes) {
+  if (!index || !item) {
+    return null
+  }
+
+  const [asn, cidr, first, last, country] = item.split(',')
+
+  const rangeIndex = getPosition(cidr, 0)
+
+  if (!indexes[rangeIndex]) {
+    indexes[rangeIndex] = []
+  }
+
+  const rangeIndex2 = getPosition(cidr, 1)
+
+  if (!indexes[rangeIndex][rangeIndex2]) {
+    indexes[rangeIndex][rangeIndex2] = []
+  }
+
+  const range = {
+    start: BigInt(first),
+    end: BigInt(last),
+    subnet: cidr,
+    asn: +asn,
+    hosting: !!dcAsns[asn],
+    country,
+  }
+
+  if (!asnCidrs[asn]) {
+    asnCidrs[asn] = []
+  }
+
+  asnCidrs[asn].push(cidr)
+
+  if (asns[asn]) {
+    asns[asn].subnetsNum = (asns[asn].subnetsNum || 0) + 1
+  }
+
+  indexes[rangeIndex][rangeIndex2].push(range)
+}
+
+readFileSync(`${__dirname}/../data/asns_cidrs_6.csv`).toString()
   .split(/\s+/)
   .filter((i) => i)
-  .forEach((item, index) => {
-    if (!index || !item) {
-      return null
-    }
+  .forEach((item, index) => indexRow(item, index, rangesIndexedV6))
 
-    const [asn, cidr, first, last, country] = item.split(',')
+readFileSync(`${__dirname}/../data/asns_cidrs_4.csv`).toString()
+  .split(/\s+/)
+  .filter((i) => i)
+  .forEach((item, index) => indexRow(item, index, rangesIndexedV4))
 
-    const rangeIndex = getPosition(cidr, 0)
-
-    if (!rangesIndexed[rangeIndex]) {
-      rangesIndexed[rangeIndex] = []
-    }
-
-    const rangeIndex2 = getPosition(cidr, 1)
-
-    if (!rangesIndexed[rangeIndex][rangeIndex2]) {
-      rangesIndexed[rangeIndex][rangeIndex2] = []
-    }
-
-    const range = {
-      start: BigInt(first),
-      end: BigInt(last),
-      subnet: cidr,
-      asn: +asn,
-      hosting: !!dcAsns[asn],
-      country,
-    }
-
-    if (!asnCidrs[asn]) {
-      asnCidrs[asn] = []
-    }
-
-    asnCidrs[asn].push(cidr)
-
-    if (asns[asn]) {
-      asns[asn].subnetsNum = (asns[asn].subnetsNum || 0) + 1
-    }
-
-    rangesIndexed[rangeIndex][rangeIndex2].push(range)
-  })
 
 function ipToInt(ip) {
   let addr
@@ -103,21 +114,24 @@ export function getIpInfo(ip) {
   const ipPosition1 = getPosition(ip, 0)
   let ipPosition2 = getPosition(ip, 1)
   const ipInt = ipToInt(ip)
+  const isIpV6 = ip.includes(':')
 
-  if (!rangesIndexed[ipPosition1]) {
+  const indexes = isIpV6 ? rangesIndexedV6 : rangesIndexedV4
+
+  if (!indexes[ipPosition1]) {
     return []
   }
 
-  if (!rangesIndexed[ipPosition1][ipPosition2]) {
-    const availableKeys = Object.keys(rangesIndexed[ipPosition1])
+  if (!indexes[ipPosition1][ipPosition2]) {
+    const availableKeys = Object.keys(indexes[ipPosition1])
     ipPosition2 = availableKeys.reverse().find((key) => key <= ipPosition2)
 
-    if (!rangesIndexed[ipPosition1][ipPosition2]) {
+    if (!indexes[ipPosition1][ipPosition2]) {
       return []
     }
   }
 
-  const filtered = rangesIndexed[ipPosition1][ipPosition2]
+  const filtered = indexes[ipPosition1][ipPosition2]
     .filter((range) => range && range.start <= ipInt && range.end >= ipInt)
 
   return filtered
