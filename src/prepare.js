@@ -12,6 +12,7 @@ const asnsV4 = `${__dirname}/../data/ip2asn-v4.tsv`
 const asnsV6 = `${__dirname}/../data/ip2asn-v6.tsv`
 
 const asnsDcs = `${__dirname}/../data/asns_dcs.csv`
+const fileNord = `${__dirname}/../data/ips_nord.csv`;
 
 console.log('Preparing files...')
 
@@ -24,6 +25,7 @@ async function downloadAndDecompress(url, outputPath) {
 await Promise.all([
     downloadAndDecompress('https://iptoasn.com/data/ip2asn-v4.tsv.gz', asnsV4),
     downloadAndDecompress('https://iptoasn.com/data/ip2asn-v6.tsv.gz', asnsV6),
+    axios.get('https://github.com/Umkus/nordvpn-ips/releases/download/ips/ips.csv', { responseType: 'blob' }).then((res) => writeFileSync(fileNord, res.data))
 ])
 
 
