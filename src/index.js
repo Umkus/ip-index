@@ -34,13 +34,17 @@ function getPosition(subnet, start) {
   const part = subnet.split(/[:\.]/)[start]
   const isIpV6 = subnet.includes(':')
 
+  if (!part) {
+    return null
+  }
+
   return parseInt(part, isIpV6 ? 16 : 10)
 }
 
 // Check if ip 4 vs 6
 
 function indexRow(item, index, indexes) {
-  if (!index || !item) {
+  if (!item) {
     return null
   }
 
@@ -127,7 +131,7 @@ export function getIpInfo(ip) {
     ipPosition2 = availableKeys.reverse().find((key) => key <= ipPosition2)
 
     if (!indexes[ipPosition1][ipPosition2]) {
-      return []
+      return indexes[ipPosition1][null] || []
     }
   }
 
