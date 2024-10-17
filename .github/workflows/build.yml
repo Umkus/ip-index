@@ -21,9 +21,9 @@ jobs:
         run: python src/main.py
       - name: Test
         run: python src/example.py
-      # - uses: EndBug/add-and-commit@v4
-      #   with:
-      #     add: .
-      #     message: Updated database
-      # - name: Push changes and the new tag
-      #   run: git push --follow-tags
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: .
+          message: Updated database
+      - name: Push changes and the new tag
+        run: git push --follow-tags
