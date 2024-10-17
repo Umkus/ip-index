@@ -27,3 +27,5 @@ jobs:
           message: Updated database
       - name: Push changes and the new tag
         run: git push --follow-tags
+      - name: Release
+        run: gh release create latest ./data/*.mmdb
