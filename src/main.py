@@ -8,7 +8,7 @@ import os
 import maxminddb
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(current_dir, '..', 'data')
+data_path = os.path.join(current_dir, "..", "data")
 
 writer = MMDBWriter(ip_version=6, ipv4_compatible=True)
 
@@ -18,6 +18,7 @@ asns_dcs_file = f"{data_path}/asns_dcs.csv"
 nord_ips_file = f"{data_path}/ips_nord.csv"
 
 m = maxminddb.open_database(mmdb_file)
+
 
 def download(url, save_path):
     """
@@ -81,8 +82,8 @@ nord_asns = set()
 for ip in nord_ips:
     try:
         record = m.get(ip)
-        if record and 'asn' in record:
-            nord_asns.add(record['asn'])
+        if record and "asn" in record:
+            nord_asns.add(record["asn"])
     except Exception as e:
         print(f"Error retrieving ASN for IP {ip}: {e}")
 
