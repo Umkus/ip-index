@@ -28,4 +28,6 @@ jobs:
       - name: Push changes and the new tag
         run: git push --follow-tags
       - name: Release
-        run: gh release create latest ./data/*.mmdb
+        run:  | 
+          (gh release delete latest || true) > /dev/null 2>&1
+          gh release create latest ./data/*.mmdb
