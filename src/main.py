@@ -74,6 +74,11 @@ download(
     nord_ips_file,
 )
 
+download(
+    "https://github.com/Umkus/ip-index/releases/download/latest/ip-index.mmdb",
+    mmdb_file,
+)
+
 with open(nord_ips_file, "r") as nord_file:
     nord_ips = {line.strip() for line in nord_file if line.strip()}
 

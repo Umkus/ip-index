@@ -4,7 +4,6 @@ dist/*
 node_modules/
 data/*
 !data/asns_dcs.csv
-!data/ip-index.mmdb
 src/review.js
 .venv
 .DS_Store
