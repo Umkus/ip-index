@@ -17,9 +17,6 @@ mmdb_file = f"{data_path}/ip-index.mmdb"
 asns_dcs_file = f"{data_path}/asns_dcs.csv"
 nord_ips_file = f"{data_path}/ips_nord.csv"
 
-m = maxminddb.open_database(mmdb_file)
-
-
 def download(url, save_path):
     """
     Downloads a file from the given URL and saves it to the specified path.
@@ -78,6 +75,8 @@ download(
     "https://github.com/Umkus/ip-index/releases/download/latest/ip-index.mmdb",
     mmdb_file,
 )
+
+m = maxminddb.open_database(mmdb_file)
 
 with open(nord_ips_file, "r") as nord_file:
     nord_ips = {line.strip() for line in nord_file if line.strip()}
