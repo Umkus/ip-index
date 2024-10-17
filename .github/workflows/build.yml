@@ -1,9 +1,6 @@
-name: Build blocklists
+name: Build database
 on:
   workflow_dispatch: {}
-  push:
-    branches:
-      - master
   schedule:
     - cron: '0 0 * * *'
 
@@ -12,36 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: oleksiyrudenko/gha-git-credentials@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-python@v5
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+          python-version: '3.12'
       - name: Installing deps
-        run: npm run deps:install
-      - name: Building images
-        run: |
-          docker compose build
-          docker compose push
-      - name: Update ASNs
-        run: node ./src/update.js
-      - uses: EndBug/add-and-commit@v4
-        with:
-          add: .
-          message: Updated ASNs list
-      - name: New version and tag
-        run: npm version patch
-      - name: Push changes and the new tag
-        run: git push --follow-tags
-      - uses: JS-DevTools/npm-publish@v1
-        name: Publishing to NPM
-        with:
-          token: ${{ secrets.NODE_AUTH_TOKEN }}
+        run: pip install -r requirements.txt
+      - name: Build
+        run: python src/main.py
+      - name: Test
+        run: python src/example.py
+      # - uses: EndBug/add-and-commit@v4
+      #   with:
+      #     add: .
+      #     message: Updated database
+      # - name: Push changes and the new tag
+      #   run: git push --follow-tags
