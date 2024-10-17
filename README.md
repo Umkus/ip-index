@@ -1,6 +1,6 @@
 # IP Index
 
-This project produces a daily build of a custom-rolled [mmdb database file](./data/ip-index.mmdb) to query IP's:
+This project produces a daily build of a custom-rolled [mmdb database file](https://github.com/Umkus/ip-index/releases/download/latest/ip-index.mmdb) to query IP's:
 - ASN number
 - ASN description
 - country
