@@ -4,6 +4,7 @@ dist/*
 node_modules/
 data/*
 !data/asns_dcs.csv
+!data/asns_dcs_unconfirmed.csv
 src/review.js
 .venv
 .DS_Store
